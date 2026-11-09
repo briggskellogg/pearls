@@ -6,17 +6,19 @@
   },
   "apple_developer_team_id": "24KAG7M42P",
   "version": "0.1.0",
-  "build": 3,
+  "build": 4,
   "status": {
-    "native_build": "Build 3: 20 core tests, Mac Debug/Release and iOS Simulator compilation passed 2026-11-08",
-    "app_store_connect_upload": "Build 3 upload succeeded once 2026-11-08 20:44:38 America/Phoenix; Apple processing complete; existing Briggs internal group assigned",
-    "testflight_invitation": "Existing confirmed internal tester invitation retained; build 3 Briggs group assignment verified in App Store Connect",
-    "mac_installation": "/Applications/Developer/Pearls.app; version 0.1.0 build 3; signature verified; previous app backed up",
-    "mac_appearance": "Light and Dark verified; System choice persisted through upgrade and follows current dark system appearance; left on System",
-    "physical_iphone": "Build 3 available to the existing internal TestFlight group; physical installation not verified",
-    "testflight_archive": "build/ios/Pearls-TestFlight-build-3.xcarchive",
-    "distribution_export": "Build 3 signatures and app/extension App Group distribution profiles verified locally",
-    "font_registration": "All five PP Neue Montreal/PP Neue York fonts registered successfully"
+    "native_build": "Build 4: 36 core tests, Mac Debug/Release and iOS Simulator compilation passed 2026-11-08",
+    "python_validation": "40 tests passed: 10 private-data guard, 19 source-sync, 11 release-package",
+    "app_store_connect_upload": "Build 4 upload succeeded once 2026-11-08 21:31:11.491 America/Phoenix; Apple processing completed and existing Briggs internal group assigned",
+    "testflight_invitation": "Existing confirmed internal tester invitation retained; build 4 detail page verifies Briggs / Internal / 1 tester; no new invitation sent",
+    "mac_installation": "/Applications/Developer/Pearls.app; version 0.1.0 build 4; exact source 0238e69f33454c90bf13f0677e68c52d923f4a50; codesign verified; previous app backed up",
+    "mac_appearance": "Settings displays 0.1.0 (4); System choice persisted through upgrade; private folder connected with Disconnect/Reconnect available",
+    "mac_entitlements": "Sandbox, user-selected read/write access, and app-scoped bookmarks confirmed in final installed app",
+    "physical_iphone": "Build 4 available to Briggs Internal; physical installation and live cross-device saved-content transfer unverified",
+    "testflight_archive": "build/ios/Pearls-TestFlight-build-4.xcarchive",
+    "distribution_export": "Build 4 app and share-extension signatures/profiles and matching App Groups verified locally",
+    "private_content_sync": "Mac connected to exact iCloud Drive/Pearls folder; empty collection initialized, 0 pearls and 0 sent/received; Foundation metadata confirms empty marker uploaded; saved-content and iPhone/PC transfer unverified"
   },
   "app_store_connect": {
     "app_id": "6832381625",
@@ -25,89 +27,193 @@
     "internal_group": "Briggs",
     "internal_group_id": "53c9d19e-50ee-4ba6-8550-cf56d5e56438",
     "verified_group_tester_count": 1,
-    "verified_available_build_number": 3,
-    "build_id": "4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
-    "testflight_url": "https://appstoreconnect.apple.com/teams/69a6de92-aaed-47e3-e053-5b8c7c11a4d1/apps/6832381625/testflight/ios/4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
+    "verified_available_build_number": 4,
+    "build_id": "30b33a85-ecad-4f78-98d2-3e8ee1f14023",
+    "testflight_url": "https://appstoreconnect.apple.com/teams/69a6de92-aaed-47e3-e053-5b8c7c11a4d1/apps/6832381625/testflight/ios/30b33a85-ecad-4f78-98d2-3e8ee1f14023",
     "previous_verified_release_notes": {
       "build": 2,
-      "what_to_test": "Settings \u2192 Appearance now offers System, Light, and Dark. System follows your device\u2019s appearance, and your choice is remembered when you reopen Pearls."
-    }
+      "what_to_test": "Settings → Appearance now offers System, Light, and Dark. System follows your device’s appearance, and your choice is remembered when you reopen Pearls."
+    },
+    "what_to_test_saved": true,
+    "what_to_test_topics": [
+      "Private iCloud folder setup",
+      "Offline edits",
+      "Conflict preservation",
+      "Deletion and restoration",
+      "Appearance"
+    ]
   },
   "github_visibility": "public",
   "artifact_package": {
-    "local_directory": "build/releases/Pearls-0.1.0-build-3",
+    "local_directory": "build/releases/Pearls-0.1.0-build-4",
     "manifest": "release-manifest.json",
     "checksums": "SHA256SUMS",
     "file_count": 5,
-    "app_source_revision": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
-    "packaging_source_revision": "4ad802bcb549ac0fe31abeb80ebe51242f3f5d0e",
+    "app_source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
+    "packaging_source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
     "artifacts": [
       {
-        "bytes": 2031837,
-        "file": "Pearls-0.1.0-build-3-dSYMs.zip",
-        "sha256": "d5cb4978fcf882ced094494ffb2326c4ad960a5d0efb0e916ea8c36093ba1b67"
+        "bytes": 2256508,
+        "file": "Pearls-0.1.0-build-4-dSYMs.zip",
+        "sha256": "c1de02f9d38cbda9c3d234a39aa2dda9624a3a4be329fb45e8cd368779529e7d"
       },
       {
-        "bytes": 1860795,
-        "file": "Pearls-0.1.0-build-3.ipa",
-        "sha256": "e74e7f9addfee88fc34989f07c1784392cf175f851b6489ef02e14f4d7674491"
+        "bytes": 2096275,
+        "file": "Pearls-0.1.0-build-4.ipa",
+        "sha256": "8aa8267fb091f07a7153b7af35311497d58aee956d5fe8dddf147eba93a340b7"
       },
       {
-        "bytes": 3399409,
-        "file": "Pearls-0.1.0-build-3.xcarchive.zip",
-        "sha256": "ef0c72e615ab52935edf6b12478e9db859cdf00f56088c64792090f89908e7a6"
+        "bytes": 3746044,
+        "file": "Pearls-0.1.0-build-4.xcarchive.zip",
+        "sha256": "c433aea8108d856f2a56d5e0bcc08be739d1beb008357a12d3155fabdaf817b6"
       }
     ],
-    "github_release_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.3",
+    "github_release_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.4",
     "pc_download_verified": false,
     "restore_verified": false,
-    "github_prerelease_tag": "v0.1.0-build.3",
-    "github_release_target": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+    "github_prerelease_tag": "v0.1.0-build.4",
+    "github_release_target": "0238e69f33454c90bf13f0677e68c52d923f4a50",
     "github_assets_verified": 5,
     "github_asset_digests_match_local": true
   },
   "source_upload_evidence": {
-    "commit": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
-    "file_count": 83,
+    "commit": "0238e69f33454c90bf13f0677e68c52d923f4a50",
+    "file_count": 91,
     "destination": "Proton Drive [projects]/pearls",
-    "verification": "Native Proton Drive Uploaded/Modified entries and completion checkmarks for project files and receipt",
+    "verification": "sync-project --push and --check passed; native Proton client showed finished Uploaded/Modified entries for receipt, privacy guard, Settings, LibraryView and other source files",
     "remote_restore_verified": false
-  },
-  "release_in_preparation": {
-    "version": "0.1.0",
-    "build": 4,
-    "status": "core_36_and_mac_debug_ios_simulator_compile_passed_release_delivery_pending",
-    "source_revision": null,
-    "upload_verified": false,
-    "changes": [
-      "Optional user-selected private iCloud Drive content sync",
-      "Offline local library retained",
-      "Windows JSON/original file access without native editor",
-      "Private-data publication guards"
-    ],
-    "private_folder_connected": false,
-    "cross_device_sync_verified": false,
-    "validation": {
-      "core_tests_passed": 36,
-      "synthetic_sync_fixtures_only": true,
-      "independent_core_review_findings_resolved": 3,
-      "final_native_validation": "36_core_tests_mac_debug_and_ios_simulator_compilation_passed",
-      "live_cross_device_sync": "unverified_no_folder_connected",
-      "native_validation_log": "build/logs/build4-validation-final.log",
-      "mac_release_installation_runtime": "pending",
-      "signing_testflight_delivery": "pending"
-    }
   },
   "private_content_boundary": {
     "public_github_or_release_inclusion_allowed": false,
     "proton_source_mirror_inclusion_allowed": false,
-    "private_folder_configured": false,
+    "private_folder_configured": true,
     "proton_library_backup_configured": false,
     "guard_tests": {
       "private_data_guard": 10,
       "source_sync": 19,
       "release_package": 11
     },
-    "evidence": "Synthetic tests only; no personal library read, copied, or connected by this verification"
+    "evidence": "Synthetic guard tests; runtime UI confirms connected empty collection (0 pearls, 0 sent/received). No personal content migrated; cloud delivery unverified.",
+    "private_folder_created": true,
+    "private_folder_relative_location": "iCloud Drive/Pearls",
+    "private_folder_created_at": "2026-11-08T21:18:00-07:00",
+    "private_folder_has_sync_marker": true,
+    "private_folder_has_personal_contents": false,
+    "private_folder_connected_at": "2026-11-08T21:33:00-07:00",
+    "provider_upload_verified": true,
+    "connection_status": "mac_connected_empty_collection_marker_uploaded",
+    "provider_upload_scope": "empty_collection_marker_only",
+    "provider_marker_evidence": {
+      "scope": "empty_collection_marker_only",
+      "is_ubiquitous_item": true,
+      "is_uploaded": true,
+      "is_uploading": false,
+      "uploading_error": false,
+      "saved_content_transfer_verified": false,
+      "physical_cross_device_test_verified": false
+    }
+  },
+  "previous_verified_releases": [
+    {
+      "version": "0.1.0",
+      "build": 3,
+      "status": {
+        "native_build": "Build 3: 20 core tests, Mac Debug/Release and iOS Simulator compilation passed 2026-11-08",
+        "app_store_connect_upload": "Build 3 upload succeeded once 2026-11-08 20:44:38 America/Phoenix; Apple processing complete; existing Briggs internal group assigned",
+        "testflight_invitation": "Existing confirmed internal tester invitation retained; build 3 Briggs group assignment verified in App Store Connect",
+        "mac_installation": "/Applications/Developer/Pearls.app; version 0.1.0 build 3; signature verified; previous app backed up",
+        "mac_appearance": "Light and Dark verified; System choice persisted through upgrade and follows current dark system appearance; left on System",
+        "physical_iphone": "Build 3 available to the existing internal TestFlight group; physical installation not verified",
+        "testflight_archive": "build/ios/Pearls-TestFlight-build-3.xcarchive",
+        "distribution_export": "Build 3 signatures and app/extension App Group distribution profiles verified locally",
+        "font_registration": "All five PP Neue Montreal/PP Neue York fonts registered successfully"
+      },
+      "app_store_connect": {
+        "app_id": "6832381625",
+        "name": "Pearls by Briggs Kellogg",
+        "url": "https://appstoreconnect.apple.com/apps/6832381625/distribution",
+        "internal_group": "Briggs",
+        "internal_group_id": "53c9d19e-50ee-4ba6-8550-cf56d5e56438",
+        "verified_group_tester_count": 1,
+        "verified_available_build_number": 3,
+        "build_id": "4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
+        "testflight_url": "https://appstoreconnect.apple.com/teams/69a6de92-aaed-47e3-e053-5b8c7c11a4d1/apps/6832381625/testflight/ios/4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
+        "previous_verified_release_notes": {
+          "build": 2,
+          "what_to_test": "Settings → Appearance now offers System, Light, and Dark. System follows your device’s appearance, and your choice is remembered when you reopen Pearls."
+        }
+      },
+      "artifact_package": {
+        "local_directory": "build/releases/Pearls-0.1.0-build-3",
+        "manifest": "release-manifest.json",
+        "checksums": "SHA256SUMS",
+        "file_count": 5,
+        "app_source_revision": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+        "packaging_source_revision": "4ad802bcb549ac0fe31abeb80ebe51242f3f5d0e",
+        "artifacts": [
+          {
+            "bytes": 2031837,
+            "file": "Pearls-0.1.0-build-3-dSYMs.zip",
+            "sha256": "d5cb4978fcf882ced094494ffb2326c4ad960a5d0efb0e916ea8c36093ba1b67"
+          },
+          {
+            "bytes": 1860795,
+            "file": "Pearls-0.1.0-build-3.ipa",
+            "sha256": "e74e7f9addfee88fc34989f07c1784392cf175f851b6489ef02e14f4d7674491"
+          },
+          {
+            "bytes": 3399409,
+            "file": "Pearls-0.1.0-build-3.xcarchive.zip",
+            "sha256": "ef0c72e615ab52935edf6b12478e9db859cdf00f56088c64792090f89908e7a6"
+          }
+        ],
+        "github_release_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.3",
+        "pc_download_verified": false,
+        "restore_verified": false,
+        "github_prerelease_tag": "v0.1.0-build.3",
+        "github_release_target": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+        "github_assets_verified": 5,
+        "github_asset_digests_match_local": true
+      },
+      "source_upload_evidence": {
+        "commit": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+        "file_count": 83,
+        "destination": "Proton Drive [projects]/pearls",
+        "verification": "Native Proton Drive Uploaded/Modified entries and completion checkmarks for project files and receipt",
+        "remote_restore_verified": false
+      }
+    }
+  ],
+  "ci": {
+    "url": "https://github.com/briggskellogg/pearls/actions/runs/42561984530",
+    "status": "completed_success",
+    "source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50"
+  },
+  "release_verification": {
+    "version": "0.1.0",
+    "build": 4,
+    "status": "processed_and_assigned_to_existing_internal_group",
+    "source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
+    "upload_verified": true,
+    "changes": [
+      "Optional user-selected private iCloud Drive content sync",
+      "Offline local library retained",
+      "Windows JSON/original file access without native editor",
+      "Private-data publication guards"
+    ],
+    "private_folder_connected": true,
+    "cross_device_sync_verified": false,
+    "validation": {
+      "core_tests_passed": 36,
+      "synthetic_sync_fixtures_only": true,
+      "independent_core_review_findings_resolved": 3,
+      "final_native_validation": "36_core_tests_mac_debug_and_ios_simulator_compilation_passed",
+      "live_cross_device_sync": "unverified_mac_connected_empty_marker_provider_upload_verified",
+      "native_validation_log": "build/logs/build4-validation-final.log",
+      "mac_release_installation_runtime": "installed_signature_settings_version_and_persisted_system_verified; private_folder_connected_empty_marker_uploaded",
+      "signing_testflight_delivery": "archive_export_signatures_profiles_verified_upload_processed_existing_briggs_internal_group_assigned"
+    },
+    "upload_time": "2026-11-08T21:31:11.491-07:00",
+    "testflight_build_id": "30b33a85-ecad-4f78-98d2-3e8ee1f14023"
   }
 }

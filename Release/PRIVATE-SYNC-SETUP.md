@@ -1,6 +1,8 @@
-# Private saved-content sync — upcoming build 4
+# Private saved-content sync — build 4
 
-Build 4 is in preparation. Its 36 core tests using synthetic local sync folders, Mac compilation, and iOS Simulator compilation pass. Mac Release installation/runtime checks and signed TestFlight delivery remain pending. No personal folder has been connected by this work, and live iPhone/Mac/Windows delivery has not been verified. Build 3's released behavior remains local storage plus manual archive transfer.
+Build 4 is installed on the Mac; 36 core tests and both platform compilations pass. The iPhone upload completed processing, and build 4 is assigned to Briggs Internal in TestFlight; physical installation remains unverified. The Mac is connected to the dedicated private **iCloud Drive/Pearls** folder, and its empty collection is initialized. At 9:33 PM Phoenix on November 8, Settings showed 0 pearls, 0 updates sent/received, and **Waiting for iCloud to upload**. A subsequent read-only provider metadata check confirmed `pearls-sync.json` uploaded successfully. That proves upload of the empty marker only: no personal content has been migrated and live iPhone/Mac/Windows delivery remains unverified. The access bookmark is stored per device.
+
+Folder selection succeeded after the user restored foreground interaction. Reuse this exact connected folder on the phone; do not create a second independent collection.
 
 ## Choose the same private folder on iPhone and Mac
 

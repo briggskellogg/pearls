@@ -1,6 +1,6 @@
 # Pearls 0.1 — native acceptance checks
 
-For released build 3, the core suite (20 tests), Mac compilation, iOS Simulator compilation, Mac Release build/signature, installation, and Mac appearance/font checks passed on November 8, 2026. Upcoming build 4 has passed 36 core tests with synthetic local sync folders plus Mac Debug and iOS Simulator compilation; Mac Release installation/runtime, signing/TestFlight, and the live private-sync checks below remain pending, as do other runtime journeys unless marked in [STATUS.md](STATUS.md). Compilation does not establish behavior on a physical iPhone.
+For released build 3, the core suite (20 tests), Mac compilation, iOS Simulator compilation, Mac Release build/signature, installation, and Mac appearance/font checks passed on November 8, 2026. Build 4 passed 36 core tests with synthetic local sync folders, 40 publication-safety tests, Mac Debug/Release and iOS Simulator compilation, signed archive/export verification, and Mac installation. Settings confirms build 4 and the persisted System choice. TestFlight build 4 processing and Briggs Internal assignment are verified; physical iPhone installation and the live private-sync checks below remain pending, as do other runtime journeys unless marked in [STATUS.md](STATUS.md). Compilation does not establish behavior on a physical iPhone.
 
 ## Build gate
 
@@ -25,9 +25,9 @@ For released build 3, the core suite (20 tests), Mac compilation, iOS Simulator 
 - Share a file named `CAPTURE.JSON` to confirm the original cannot collide with inbox metadata.
 - Test a file-provider loading failure, a file larger than 25 MiB, and a missing App Group configuration. Preserve errors and staged data until deliberate cancellation; never show false success.
 
-## Private iCloud folder sync — pending build 4
+## Private iCloud folder sync — live verification pending
 
-- Connect a dedicated private iCloud Drive Pearls folder through Settings on both Apple devices; verify that the same folder/collection is selected. No folder is connected yet.
+- The Mac is connected to the dedicated private iCloud Drive Pearls folder with an empty initialized collection. The provider confirms upload of the empty marker; connect that same folder through iPhone Settings and verify the same collection is selected.
 - Save a synthetic note and attachment on one device, leave both apps active, wait for provider completion, and verify exact content/original bytes on the other. Repeat in the reverse direction and after relaunch.
 - Edit while offline on both devices, reconnect, and verify preserved conflict copies/edits, deletions, restoration, favorites, and originals without silent loss.
 - Interrupt a provider download/upload and retry. An incomplete folder or a cloud conflict must not produce false success or erase the local library.

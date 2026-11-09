@@ -2,7 +2,7 @@
 
 ## Product
 
-Pearls is a native Mac/iPhone collection for notes, links, images, and files. Preserve the supplied visual identity and existing app/library data. The local Application Support library remains the offline working copy; the iPhone App Group is only a capture inbox. Build 4 adds optional private content exchange through one explicitly chosen iCloud Drive Pearls folder. It is separate from project-source mirroring and is not connected or verified live until the user selects that folder on their devices.
+Pearls is a native Mac/iPhone collection for notes, links, images, and files. Preserve the supplied visual identity and existing app/library data. The local Application Support library remains the offline working copy; the iPhone App Group is only a capture inbox. Build 4 adds optional private content exchange through one explicitly chosen iCloud Drive Pearls folder. It is separate from project-source mirroring. The Mac has connected the dedicated private iCloud Drive/Pearls folder and initialized an empty collection; provider upload of the empty marker is confirmed, while saved-content transfer and iPhone/PC delivery remain unverified. Each device must explicitly select the same private folder.
 
 Saved notes, links, images, PDFs, originals, library metadata, private sync versions, and collection exports must never enter the public GitHub repository, a GitHub release, or the Proton project-source mirror. Windows has file access through iCloud for Windows, not a native Pearls editor. Follow `Release/PRIVATE-SYNC-SETUP.md`; do not choose a private sync folder on the user's behalf or point it at this source repository/Proton project folder.
 
