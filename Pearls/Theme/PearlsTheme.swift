@@ -94,27 +94,53 @@ enum PearlsTheme {
     }
 }
 
-/// A small code-native version of the supplied orbit mark for navigation chrome.
+/// The supplied symbol, kept independent of its handwritten wordmark.
 struct PearlsBrandMark: View {
-    var size: CGFloat = 29
+    var size: CGFloat = 26
 
     var body: some View {
-        ZStack {
-            Ellipse()
-                .stroke(PearlsTheme.sky, style: StrokeStyle(lineWidth: size * 0.10, lineCap: .round))
-                .frame(width: size * 0.88, height: size * 0.64)
-                .rotationEffect(.degrees(-24))
-            Path { path in
-                path.move(to: CGPoint(x: size * 0.60, y: size * 0.64))
-                path.addQuadCurve(
-                    to: CGPoint(x: size * 0.74, y: size * 0.48),
-                    control: CGPoint(x: size * 0.74, y: size * 0.60)
-                )
-            }
-            .stroke(PearlsTheme.sky, style: StrokeStyle(lineWidth: size * 0.10, lineCap: .round))
+        Image("PearlsSymbol")
+            .resizable()
+            .renderingMode(.original)
+            .interpolation(.high)
+            .scaledToFit()
+            // The supplied square includes generous transparent margins.
+            .frame(width: size * 1.35, height: size * 1.35)
+            .frame(width: size, height: size)
+            .accessibilityHidden(true)
+    }
+}
+
+struct PearlsBrandSignature: View {
+    var symbolSize: CGFloat = 26
+    var textSize: CGFloat = 22
+
+    var body: some View {
+        HStack(spacing: 8) {
+            PearlsBrandMark(size: symbolSize)
+            Text("Pearls")
+                .font(PearlsTheme.brand(textSize))
+                .foregroundStyle(.primary)
+                .lineLimit(1)
         }
-        .frame(width: size, height: size)
-        .accessibilityHidden(true)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Pearls")
+    }
+}
+
+/// The approved gold signature keeps its supplied color in both appearances.
+struct PearlsMakerMark: View {
+    var body: some View {
+        Image("MakerMark")
+            .resizable()
+            .renderingMode(.original)
+            .interpolation(.high)
+            .scaledToFit()
+            .frame(width: 14, height: 18)
+            .accessibilityLabel("Made by Briggs Kellogg")
+            #if os(macOS)
+            .help("Made by Briggs Kellogg")
+            #endif
     }
 }
 

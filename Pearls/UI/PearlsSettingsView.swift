@@ -28,15 +28,11 @@ struct PearlsSettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
-                    HStack(spacing: 12) {
-                        PearlsBrandMark(size: 42)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("pearls")
-                                .font(PearlsTheme.brand(28))
-                            Text("Version \(version) (\(buildNumber))")
-                                .font(PearlsTheme.body(13))
-                                .foregroundStyle(.secondary)
-                        }
+                    VStack(alignment: .leading, spacing: 6) {
+                        PearlsBrandSignature(symbolSize: 32, textSize: 24)
+                        Text("Version \(version) (\(buildNumber))")
+                            .font(PearlsTheme.body(13))
+                            .foregroundStyle(.secondary)
                     }
                     .padding(.top, 14)
 

@@ -132,7 +132,7 @@ for target in ["PearlsShare", "Pearls-Mac", "Pearls-iOS"]:
     phases = []
     if not is_extension:
         phases.append(add("phase:" + target + ":Icons", "PBXShellScriptBuildPhase", buildActionMask="2147483647",
-            name="Package supplied app icon", files=[], alwaysOutOfDate="1", inputPaths=["$(SRCROOT)/BuildSupport/prepare-assets.sh", "$(SRCROOT)/BuildSupport/PrepareIcons.swift", "$(SRCROOT)/Pearls/Resources/Assets.xcassets/PearlsMark.imageset/pearls.png"],
+            name="Package supplied app icon", files=[], alwaysOutOfDate="1", inputPaths=["$(SRCROOT)/BuildSupport/prepare-assets.sh", "$(SRCROOT)/BuildSupport/PrepareIcons.swift", "$(SRCROOT)/Pearls/Resources/Assets.xcassets/PearlsSymbol.imageset/pearls-symbol.png", "$(SRCROOT)/Pearls/Resources/Assets.xcassets/MakerMark.imageset/maker-mark.png"],
             outputPaths=["$(SRCROOT)/Pearls/Resources/Assets.xcassets/AppIcon-Mac.appiconset/Contents.json", "$(SRCROOT)/Pearls/Resources/Assets.xcassets/AppIcon-iOS.appiconset/Contents.json"],
             runOnlyForDeploymentPostprocessing="0", shellPath="/bin/bash", shellScript='bash "$SRCROOT/BuildSupport/prepare-assets.sh"\n'))
     phases += [sources_phase, frameworks_phase, resources_phase]

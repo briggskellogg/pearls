@@ -194,7 +194,11 @@ struct PearlsLibraryView: View {
             }
         }
         .background(PearlsTheme.canvas)
+        #if os(macOS)
         .navigationTitle("Pearls")
+        #else
+        .navigationTitle("")
+        #endif
         .pearlsInlineNavigationTitle()
         .toolbar {
             #if os(macOS)
@@ -206,13 +210,15 @@ struct PearlsLibraryView: View {
                 .help("Save a note or link")
             }
             #else
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    PearlsBrandMark(size: 25)
-                    Text("pearls").font(PearlsTheme.brand(22))
+            if #available(iOS 26.0, *) {
+                ToolbarItem(placement: .topBarLeading) {
+                    PearlsBrandSignature()
                 }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Pearls")
+                .sharedBackgroundVisibility(.hidden)
+            } else {
+                ToolbarItem(placement: .topBarLeading) {
+                    PearlsBrandSignature()
+                }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button { showingSettings = true } label: {
@@ -226,11 +232,14 @@ struct PearlsLibraryView: View {
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             #if os(iOS)
-            Button { showingCapture = true } label: {
-                Label("Save a pearl", systemImage: "plus")
-                    .frame(maxWidth: .infinity)
+            HStack(spacing: 14) {
+                Button { showingCapture = true } label: {
+                    Label("Save a pearl", systemImage: "plus")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(PearlsPrimaryButtonStyle())
+                PearlsMakerMark()
             }
-            .buttonStyle(PearlsPrimaryButtonStyle())
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
             .background(.regularMaterial)
@@ -316,12 +325,9 @@ struct PearlsLibraryView: View {
     #if os(macOS)
     private var sidebar: some View {
         VStack(alignment: .leading, spacing: 24) {
-            HStack(spacing: 11) {
-                PearlsBrandMark(size: 36)
-                Text("pearls").font(PearlsTheme.brand(29))
-            }
-            .padding(.horizontal, 18)
-            .padding(.top, 30)
+            PearlsBrandSignature()
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
             VStack(spacing: 6) {
                 ForEach(Destination.allCases, id: \.self) { entry in
                     destinationButton(entry)
@@ -338,9 +344,13 @@ struct PearlsLibraryView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                Text(syncFolder.isConnected ? "Private iCloud folder" : "On this device")
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
+                HStack(alignment: .bottom, spacing: 12) {
+                    Text(syncFolder.isConnected ? "Private iCloud folder" : "On this device")
+                        .font(PearlsTheme.body(11))
+                        .foregroundStyle(.secondary)
+                    Spacer(minLength: 4)
+                    PearlsMakerMark()
+                }
             }
             .padding(24)
         }

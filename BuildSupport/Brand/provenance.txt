@@ -1,0 +1,17 @@
+Pearls branding — build 5
+
+The in-app name is live text in PP Neue Montreal Bold, shared with the sibling apps. The Pearls symbol is separate from lettering. The gold maker mark is reused unchanged from Bard in #D1A13A.
+
+PearlsSymbol/pearls-symbol.png was edited with the built-in image_gen tool from the supplied PearlsMark/pearls.png, first removing the handwritten name, then cleaning residual pixels. This is an AI-edited asset, not a claim of pixel-identical extraction. The original master remains unchanged.
+
+MakerMark/maker-mark.png SHA-256: 28fdbed18575b99104c7a0c745fc9099ce86462744f0b01bfea2308876d03fe6.
+BuildSupport/Brand/briggs-maker-mark-gold.svg SHA-256: f5abd566c9c70ea65bfd7165d63fb12cf36471a8d491d129b8f26e5279e9594b.
+The maker vector is Bard's contour trace of the supplied gold silhouette, with its original provenance retained; no mark redesign was made for Pearls.
+
+Mac app-icon PNGs preserve alpha; iOS default and marketing PNGs are opaque to satisfy Apple's raster icon requirements. System icon masking/treatment may still apply.
+
+Built-in edit prompt 1:
+Use case: precise-object-edit. Asset type: Pearls application symbol, transparent PNG. Input image is the edit target. Remove the handwritten word 'pearls' completely and remove residual stray blue/cyan pixels around the symbol. Keep only the large tilted blue oval/orbit ring and its small curved blue pearl/dash inside the lower-right of the ring. Preserve this exact symbol's organic silhouette, tilt, relative stroke thickness, inner dash shape, and blue color; do not replace it with a generic ellipse or redesign it. Center the remaining symbol alone on a square transparent canvas, with a small even margin around its bounds. No text, no letters, no maker's mark, no background, no shadow, no new elements. Genuine alpha transparency, including inside the ring. Clean anti-aliased edges.
+
+Built-in edit prompt 2 (selected output):
+Use case: background-extraction. Edit the supplied symbol-only logo to remove ALL stray blue and cyan splatter, dust, mottling, fringe, texture, artifacts and isolated pixels. Keep only the main thick tilted oval ring and its single curved dash, with absolutely clean smooth edges and a uniform flat solid sky-blue fill (#32A6F8). True alpha transparency both outside and inside the ring. The shape is a slightly irregular oval ring tilted up to the right, and the curved dash is separated from the inner lower-right edge by a transparent gap. Preserve the silhouette, angle and proportions of this supplied symbol. No other marks, no writing, no lettering, no white background, no gradient, no glow, no noise, no speckles. Center on square transparent canvas with small margin. Finished application icon asset.

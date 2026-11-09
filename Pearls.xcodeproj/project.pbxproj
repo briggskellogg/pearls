@@ -691,7 +691,8 @@
 			"inputPaths" = (
 				"$(SRCROOT)/BuildSupport/prepare-assets.sh",
 				"$(SRCROOT)/BuildSupport/PrepareIcons.swift",
-				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/PearlsMark.imageset/pearls.png",
+				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/PearlsSymbol.imageset/pearls-symbol.png",
+				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/MakerMark.imageset/maker-mark.png",
 			);
 			"outputPaths" = (
 				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/AppIcon-Mac.appiconset/Contents.json",
@@ -942,7 +943,8 @@
 			"inputPaths" = (
 				"$(SRCROOT)/BuildSupport/prepare-assets.sh",
 				"$(SRCROOT)/BuildSupport/PrepareIcons.swift",
-				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/PearlsMark.imageset/pearls.png",
+				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/PearlsSymbol.imageset/pearls-symbol.png",
+				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/MakerMark.imageset/maker-mark.png",
 			);
 			"outputPaths" = (
 				"$(SRCROOT)/Pearls/Resources/Assets.xcassets/AppIcon-Mac.appiconset/Contents.json",
