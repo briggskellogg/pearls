@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Local-only regression checks for source mirroring and conflict preservation."""
 import importlib.util
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
@@ -8,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.dont_write_bytecode = True
 spec = importlib.util.spec_from_file_location("pearls_sync", Path(__file__).with_name("sync-project.py"))
@@ -166,6 +169,44 @@ class SnapshotTests(unittest.TestCase):
         self.commit()
         with self.assertRaisesRegex(sync.SyncError, "private configuration"):
             sync.snapshot(self.root)
+
+    def test_mirror_only_uses_no_network_and_reports_local_status(self):
+        original_git = sync.git
+
+        def local_git(root, *args):
+            self.assertNotIn(args[0], ("push", "fetch", "pull", "ls-remote"))
+            return original_git(root, *args)
+
+        with tempfile.TemporaryDirectory(prefix="pearls-offline-mirror-") as temporary:
+            destination = Path(temporary).resolve() / "pearls"
+            output = io.StringIO()
+            with (mock.patch.object(sync, "__file__", str(self.root / "scripts/sync-project.py")),
+                  mock.patch.object(sync, "remote_commit", side_effect=AssertionError("Network is forbidden")) as remote,
+                  mock.patch.object(sync, "git", side_effect=local_git),
+                  contextlib.redirect_stdout(output)):
+                self.assertEqual(sync.main(["--mirror-only", "--destination", str(destination)]), 0)
+                remote.assert_not_called()
+            self.assertEqual((destination / "source.txt").read_text(), "original")
+            receipt = json.loads((destination / sync.RECEIPT).read_text())
+            self.assertEqual(receipt["commit"], self.command("rev-parse", "HEAD").decode().strip())
+            self.assertEqual(receipt, json.loads((self.root / ".git" / sync.RECEIPT).read_text()))
+            self.assertIn("Local mirror only:", output.getvalue())
+            self.assertIn("GitHub was not contacted or verified", output.getvalue())
+            self.assertNotIn("Synced:", output.getvalue())
+
+    def test_mirror_only_keeps_conflict_and_dirty_checkout_checks(self):
+        with tempfile.TemporaryDirectory(prefix="pearls-offline-mirror-") as temporary:
+            destination = Path(temporary).resolve()
+            (destination / "source.txt").write_text("Proton edit")
+            with (mock.patch.object(sync, "__file__", str(self.root / "scripts/sync-project.py")),
+                  mock.patch.object(sync, "remote_commit", side_effect=AssertionError("Network is forbidden"))):
+                with self.assertRaisesRegex(sync.SyncError, "Destination edits"):
+                    sync.main(["--mirror-only", "--destination", str(destination)])
+                self.assertEqual((destination / "source.txt").read_text(), "Proton edit")
+                self.assertFalse((destination / sync.RECEIPT).exists())
+                (self.root / "source.txt").write_text("local edit")
+                with self.assertRaisesRegex(sync.SyncError, "Commit tracked"):
+                    sync.main(["--mirror-only", "--destination", str(destination)])
 
 
 if __name__ == "__main__":

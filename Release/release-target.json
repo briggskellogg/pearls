@@ -9,9 +9,12 @@
   "apple_developer_team_id": "24KAG7M42P",
   "status": {
     "native_build": "20 core tests, Mac and iOS Simulator compilation passed 2026-11-08",
-    "app_store_connect_upload": "not performed",
+    "app_store_connect_upload": "first attempt stopped before transmission because app record was missing; record creation in progress",
     "testflight_invitation": "not sent",
     "mac_installation": "/Applications/Developer/Pearls.app; version 0.1.0 build 1; signature and launch verified",
-    "physical_iphone": "pending connected/registered iPhone; Apple development provisioning has no registered device"
-  }
+    "physical_iphone": "TestFlight selected by user; delivery pending",
+    "testflight_archive": "build/ios/Pearls-TestFlight-entitlements-build-1.xcarchive",
+    "distribution_export": "signature and app/extension App Group profiles verified"
+  },
+  "github_publication": "User explicitly approved publishing full project, including supplied fonts/artwork, publicly on 2026-11-08"
 }

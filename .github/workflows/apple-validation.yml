@@ -21,5 +21,7 @@ jobs:
           xcodebuild -version
           xcodebuild -showsdks
           swift --version
+      - name: Test project sync safety
+        run: python3 scripts/test-sync-project.py
       - name: Test core and compile both apps
         run: bash scripts/validate-apple.sh

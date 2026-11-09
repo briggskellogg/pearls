@@ -22,7 +22,9 @@ bash scripts/install-mac.sh --developer
 | `scripts/install-mac.sh --developer` | Build and install to `/Applications/Developer/Pearls.app` (default) |
 | `scripts/install-mac.sh --user` | Build and install to the current user’s `~/Applications/Pearls.app` |
 | `scripts/install-mac.sh --system` | Build and install to `/Applications/Pearls.app` if that folder is already writable |
-| `scripts/archive-ios.sh` | Create a signed device archive using the selected team and authentication |
+| `scripts/archive-ios.sh` | Create a development-signed device archive; provisioning requires a registered device |
+| `scripts/prepare-testflight.sh` | Prepare an archive and verify a local App Store distribution export without registering a device; no upload |
+| `scripts/verify-testflight.sh /path/to/export-or.ipa` | Check app/extension signatures, versions, team, distribution profiles, and App Group access |
 | `scripts/upload-testflight.sh /absolute/path/to/archive.xcarchive` | Export and upload that exact archive to App Store Connect |
 
 The build scripts first run `BuildSupport/prepare-assets.sh` to generate the required Apple icon assets from the bundled artwork. They fail before build or upload on a non-Mac host. Full Xcode must be installed and opened once to complete setup. Command Line Tools alone are insufficient. If several Xcode installations exist, set `DEVELOPER_DIR` to the intended installation’s `Contents/Developer` directory.
@@ -72,7 +74,7 @@ export ASC_KEY_PATH="$HOME/.private_keys/AuthKey_<key-id>.p8"
 export ASC_KEY_ID='<actual key identifier>'
 export ASC_ISSUER_ID='<actual team issuer UUID>'
 export BUILD_NUMBER='1'
-bash scripts/archive-ios.sh
+bash scripts/prepare-testflight.sh
 ```
 
 Replace the placeholders. API access must permit the app and provisioning actions being performed. The script uses `-allowProvisioningUpdates` and the `-authenticationKeyPath`, `-authenticationKeyID`, and `-authenticationKeyIssuerID` options. These options authorize Xcode; they do not waive Apple role restrictions, certificate requirements, registered identifiers, or capability provisioning. Apple describes the options in [Xcode 13 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-13-release-notes) and API-key uploads in [Xcode 15 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes).
@@ -84,15 +86,26 @@ unset ASC_KEY_PATH ASC_KEY_ID ASC_ISSUER_ID
 export APPLE_AUTH_MODE=xcode-account
 export TEAM_ID='<actual 10-character team ID>'
 export BUILD_NUMBER='1'
-bash scripts/archive-ios.sh
+bash scripts/prepare-testflight.sh
 ```
 
-Archives default to `build/ios/Pearls-build-<number>.xcarchive`. Existing archives are never overwritten. Set `ARCHIVE_PATH` to an absolute `.xcarchive` path to choose a different output. App and extension must share the same marketing version/build and be signed for the selected team.
+TestFlight preparation defaults to `build/ios/Pearls-TestFlight-build-<number>.xcarchive` and `build/ios/testflight-export-build-<number>/`. Existing archives and export folders are never overwritten. Set `ARCHIVE_PATH` and `EXPORT_PATH` to unused absolute paths when another output is needed.
+
+The preparation script compiles the iPhone device products without development provisioning, then gives the app and share extension local ad-hoc signatures containing their source entitlements. Xcode uses those capabilities when applying App Store distribution signing during a local export. This preserves the shared App Group; exporting an unsigned archive directly can omit that capability. The staged archive is not itself an installable distribution release. The script verifies the exported IPA's signatures, matching version/build, team and app identifiers, App Store profiles, disabled debugging entitlement, and shared App Group before reporting success. It does not upload or invite testers.
+
+To recheck a retained export:
+
+```bash
+TEAM_ID='<actual 10-character team ID>' BUILD_NUMBER=1 \
+  bash scripts/verify-testflight.sh "$PWD/build/ios/testflight-export-build-1/Pearls.ipa"
+```
+
+The separate `archive-ios.sh` retains development signing and its `build/ios/Pearls-build-<number>.xcarchive` default. That route requires development provisioning and is useful for registered-device installation; TestFlight preparation does not require registering a phone.
 
 After validating the exact archive, upload it:
 
 ```bash
-bash scripts/upload-testflight.sh "$PWD/build/ios/Pearls-build-1.xcarchive"
+bash scripts/upload-testflight.sh "$PWD/build/ios/Pearls-TestFlight-build-1.xcarchive"
 ```
 
 The uploader checks that the archive contains an iPhone device app and the expected bundle identifier. If the bundle identifier was customized, set `EXPECTED_IOS_BUNDLE_ID` to that exact value. The uploader creates a fresh export directory and an `ExportOptions.plist` using `method=app-store-connect`, `destination=upload`, automatic signing, and the selected team. It preserves the archive’s version/build rather than allowing an automatic bump. It also verifies that the installed Xcode advertises the export method in `xcodebuild -help`. Apple documents the [export options file](https://help.apple.com/xcode/mac/current/en.lproj/deva1f2ab5a2.html).

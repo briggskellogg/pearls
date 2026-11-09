@@ -16,6 +16,8 @@ The user requires completed Pearls work to stay synchronized between this checko
 
 The sync command mirrors committed source with a SHA-256 receipt, excludes Git internals and ignored build/signing files, and refuses to overwrite conflicting mirror edits. A successful local mirror check is not proof that the Proton client has uploaded it. Never put credentials, signing keys, provisioning profiles, or personal app libraries into GitHub or the project mirror.
 
+If GitHub is temporarily unavailable or awaiting an explicit publishing decision, `python3 scripts/sync-project.py --mirror-only` can complete the local Proton copy. It performs no network calls and does not verify or claim a GitHub sync.
+
 No recurring background task has been configured. These instructions apply whenever work is done on Pearls.
 
 ## Validation and release

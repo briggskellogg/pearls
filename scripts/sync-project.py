@@ -205,14 +205,15 @@ def unchanged_checkout(root, commit):
         raise SyncError("The local checkout changed during sync; reconcile it and rerun.")
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--destination", type=Path, help="Proton project folder (or use .pearls-sync.local.json)")
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--check", action="store_true", help="Check without changing GitHub or the mirror (default)")
     modes.add_argument("--push", action="store_true", help="Push current main, verify GitHub, then update the mirror")
     modes.add_argument("--sync", action="store_true", help="Update the mirror only if GitHub already matches")
-    args = parser.parse_args()
+    modes.add_argument("--mirror-only", action="store_true", help="Update only the local mirror; do not contact or verify GitHub")
+    args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
     destination = args.destination
     if destination is None:
@@ -226,6 +227,16 @@ def main():
         raise SyncError("The destination and Git checkout must be separate folders.")
     commit, files = snapshot(root)
     previous, expected, writes, removals = preflight(destination, files)
+    if args.mirror_only:
+        unchanged_checkout(root, commit)
+        local_receipt = Path(git(root, "rev-parse", "--absolute-git-dir").decode().strip()) / RECEIPT
+        copied, removed = mirror(destination, commit, files, local_receipt)
+        unchanged_checkout(root, commit)
+        print(f"Local mirror only: {commit} — {len(files)} verified source files; {copied} updated, {removed} removed.")
+        print(f"Proton folder: {destination}")
+        print("GitHub was not contacted or verified. This does not establish GitHub synchronization.")
+        print("Proton cloud upload is managed separately by the Proton Drive app.")
+        return 0
     remote = remote_commit(root)
     is_current = (remote == commit and previous is not None and previous.get("commit") == commit
                   and previous["files"] == expected and not writes and not removals)

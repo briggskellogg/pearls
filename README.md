@@ -2,7 +2,7 @@
 
 Pearls is a focused place for notes, links, images, and files. This project contains a shared SwiftUI app for **Mac and iPhone**, a local Foundation storage package, and an iPhone share extension.
 
-**Delivery status (November 8, 2026):** 20 core tests pass; Mac and iOS Simulator builds pass. Pearls 0.1.0 (1) is installed and launches at `/Applications/Developer/Pearls.app` on the user's Mac. Physical iPhone installation and TestFlight remain pending: development provisioning requires a connected/registered iPhone. See [current release evidence](Release/STATUS.md).
+**Delivery status (November 8, 2026):** 20 core tests pass; Mac and iOS Simulator builds pass. Pearls 0.1.0 (1) is installed and launches at `/Applications/Developer/Pearls.app` on the user's Mac. The user selected TestFlight for iPhone delivery; distribution signing and App Store Connect delivery remain in progress. See [current release evidence](Release/STATUS.md).
 
 ## Project synchronization
 
@@ -78,13 +78,13 @@ For a team already signed in to Xcode:
 
 ```bash
 TEAM_ID=YOURTEAMID APPLE_AUTH_MODE=xcode-account BUILD_NUMBER=1 \
-  bash scripts/archive-ios.sh
+  bash scripts/prepare-testflight.sh
 
 TEAM_ID=YOURTEAMID APPLE_AUTH_MODE=xcode-account \
-  bash scripts/upload-testflight.sh "/absolute/path/to/PearlsNative/build/ios/Pearls-build-1.xcarchive"
+  bash scripts/upload-testflight.sh "$PWD/build/ios/Pearls-TestFlight-build-1.xcarchive"
 ```
 
-Replace `YOURTEAMID` with the actual 10-character team ID and use an unuploaded build number. The first development-signing archive attempt reached Apple but could not create profiles without a registered device. TestFlight delivery uses distribution signing; see `Release/STATUS.md` for the current attempt and next step.
+Replace `YOURTEAMID` with the actual 10-character team ID and use an unuploaded build number. Preparation creates a device archive, preserves the app and share extension's source entitlements, and verifies a local App Store distribution export. It does not need a registered iPhone and does not upload. Existing archive/export paths are never overwritten. `archive-ios.sh` remains available for the separate development-signing path. See `Release/STATUS.md` for the current release attempt and next step.
 
 After upload, App Store Connect must finish processing. Assign the processed build to the appropriate TestFlight group and invite the verified tester email. An eligible App Store Connect account can use internal testing; external testing may require beta review. Neither uploading nor creating this project sends an invitation. See `Release/README.md` for verified Apple links and the exact handoff sequence.
 

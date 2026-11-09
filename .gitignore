@@ -1,5 +1,6 @@
 .DS_Store
 .pearls-sync.local.json
+__pycache__/
 .build/
 build/
 DerivedData/
