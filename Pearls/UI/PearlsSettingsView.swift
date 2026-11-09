@@ -7,6 +7,7 @@ struct PearlsSettingsView: View {
     let onShowRecentlyDeleted: () -> Void
 
     @Environment(\.dismiss) private var dismiss
+    @AppStorage(PearlsAppearance.storageKey) private var appearance: PearlsAppearance = .system
 
     private var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1"
@@ -27,6 +28,24 @@ struct PearlsSettingsView: View {
                         }
                     }
                     .padding(.top, 14)
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Appearance", systemImage: "circle.lefthalf.filled")
+                            .font(PearlsTheme.medium(18))
+                        Picker("Appearance", selection: $appearance) {
+                            ForEach(PearlsAppearance.allCases) { option in
+                                Text(option.title).tag(option)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        Text("System follows your device’s light or dark appearance.")
+                            .font(PearlsTheme.body(13))
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(22)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(PearlsTheme.softSurface, in: RoundedRectangle(cornerRadius: 16))
 
                     VStack(alignment: .leading, spacing: 12) {
                         Label("On this device", systemImage: "internaldrive")

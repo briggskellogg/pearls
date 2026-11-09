@@ -5,6 +5,29 @@ import AppKit
 import UIKit
 #endif
 
+enum PearlsAppearance: String, CaseIterable, Identifiable {
+    case system, light, dark
+
+    static let storageKey = "pearls.appearance"
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .system: "System"
+        case .light: "Light"
+        case .dark: "Dark"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+}
+
 enum PearlsTheme {
     static let blue = Color(red: 0.20, green: 0.46, blue: 0.95)
     static let gold = Color(red: 0.78, green: 0.57, blue: 0.12)

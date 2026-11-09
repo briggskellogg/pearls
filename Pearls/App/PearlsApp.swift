@@ -8,12 +8,14 @@ extension Notification.Name {
 @MainActor
 struct PearlsApp: App {
     @StateObject private var library = LibraryController()
+    @AppStorage(PearlsAppearance.storageKey) private var appearance: PearlsAppearance = .system
 
     init() { FontRegistration.registerBundledFonts() }
 
     var body: some Scene {
         WindowGroup("Pearls") {
             PearlsRootView(library: library)
+                .preferredColorScheme(appearance.colorScheme)
         }
         #if os(macOS)
         .defaultSize(width: 1120, height: 800)

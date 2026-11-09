@@ -40,9 +40,10 @@ app_sources = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Pearls").rglob("
 share_sources = ["Pearls/Platform/AppPaths.swift", "PearlsShare/ShareViewController.swift"]
 resources = ["Pearls/Resources/Assets.xcassets", "Pearls/Resources/PrivacyInfo.xcprivacy"]
 resources += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Pearls/Resources/Fonts").glob("*.otf"))
+share_resources = ["PearlsShare/PrivacyInfo.xcprivacy"]
 configuration_files = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Configuration").iterdir() if p.is_file() and p.name != "Local.xcconfig")
 support_files = ["BuildSupport/prepare-assets.sh", "BuildSupport/PrepareIcons.swift", "BuildSupport/generate-project.py"]
-all_files = sorted(set(app_sources + share_sources + resources + configuration_files + support_files))
+all_files = sorted(set(app_sources + share_sources + resources + share_resources + configuration_files + support_files))
 missing_files = [path for path in all_files if not (ROOT / path).exists()]
 if missing_files:
     raise FileNotFoundError("Missing project inputs: " + ", ".join(missing_files))
@@ -116,7 +117,7 @@ for target in ["PearlsShare", "Pearls-Mac", "Pearls-iOS"]:
     is_mac = target == "Pearls-Mac"
     is_extension = target == "PearlsShare"
     source_paths = share_sources if is_extension else app_sources
-    resource_paths = ["Pearls/Resources/PrivacyInfo.xcprivacy"] if is_extension else resources
+    resource_paths = share_resources if is_extension else resources
     sources_phase = build_phase(target, "Sources", "PBXSourcesBuildPhase", source_paths)
     resources_phase = build_phase(target, "Resources", "PBXResourcesBuildPhase", resource_paths)
     package_products = []

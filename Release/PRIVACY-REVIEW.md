@@ -2,9 +2,9 @@
 
 ## What was inspected
 
-Source review updated on 2026-11-08 in Linux after broad file-attribute dictionary queries were removed. The reviewed source includes the Foundation storage package, all 16 shared app Swift files, and `PearlsShare/ShareViewController.swift`. The extension compiles that controller together with the shared `AppPaths.swift` pending-capture writer/reader. This review cannot substitute for building and inspecting the final app and embedded extension on a Mac.
+Source review updated on 2026-11-08 for the System/Light/Dark appearance preference, following the earlier review of file-attribute queries. The reviewed source includes the Foundation storage package, shared app Swift files, and `PearlsShare/ShareViewController.swift`. The extension compiles that controller together with the shared `AppPaths.swift` pending-capture writer/reader. This review cannot substitute for building and inspecting the final app and embedded extension on a Mac.
 
-The current source manifest at `Pearls/Resources/PrivacyInfo.xcprivacy` has no declared tracking, collection types, or required-reason APIs. This release work does not modify that manifest. Reconcile its contents against the final implementation and dependencies before uploading.
+The Mac/iPhone app manifest at `Pearls/Resources/PrivacyInfo.xcprivacy` declares `NSPrivacyAccessedAPICategoryUserDefaults` with reason `CA92.1` for its own persisted appearance setting. The share extension has a separate manifest at `PearlsShare/PrivacyInfo.xcprivacy` with no required-reason APIs: it does not read that preference or use UserDefaults. Both manifests continue to declare no tracking or collected data types. The project generator assigns the correct manifest to each target.
 
 ## Observed calls and the Apple categories
 
@@ -13,7 +13,8 @@ The current source manifest at `Pearls/Resources/PrivacyInfo.xcprivacy` has no d
 | Bounds checks on library JSON, user-picked files, temporary copies, and capture JSON | `URL.resourceValues(forKeys:)` using `fileSizeKey` and `isRegularFileKey` | No named timestamp accessor was found. File-size metadata alone is not a blanket reason to claim every file API category. |
 | Reject symlinks, verify ordinary files/directories | `isRegularFileKey`, `isDirectoryKey`, `isSymbolicLinkKey`, `contentTypeKey`, and `destinationOfSymbolicLink(atPath:)` | File validation; no explicit file timestamp query found. |
 | Library creation/edit dates | `Date` values stored in the app’s own model | These model timestamps are not filesystem timestamp API calls. |
-| App Group shared inbox | `FileManager.containerURL(forSecurityApplicationGroupIdentifier:)`, capture files in that container; main libraries remain in each app’s Application Support directory | An App Group by itself does not mean `UserDefaults` is used. No `UserDefaults`, `@AppStorage`, or `@SceneStorage` use was found in the reviewed source. |
+| Appearance setting | `@AppStorage("pearls.appearance")` backed by standard app UserDefaults | Persists the app’s own System/Light/Dark choice. Declared as app-only access under `CA92.1`; the app does not read system preference keys or use an App Group defaults suite. |
+| App Group shared inbox | `FileManager.containerURL(forSecurityApplicationGroupIdentifier:)`, capture files in that container; main libraries remain in each app’s Application Support directory | File-based capture exchange, independent of appearance preferences. The share extension does not use `UserDefaults`, `@AppStorage`, or `@SceneStorage`. |
 | Share-extension originals | `NSItemProvider` object/file/data representations, security-scoped file access, and bounded `FileHandle` reads | The extension stages originals in its temporary directory, then publishes into the App Group. No file timestamp or device-inventory accessor was found. |
 | Boot time, disk capacity, keyboard inventory | None found in reviewed source | Do not add these declarations without actual use. |
 
@@ -25,7 +26,7 @@ For `NSPrivacyAccessedAPICategoryFileTimestamp`, reason `C617.1` fits metadata a
 
 `PrivacyInfo-file-metadata.template.xcprivacy` supplies those two entries as a **conditional template**, not as an automatically included app resource. If a final source or binary review identifies this category, merge the justified entries into that target’s real `PrivacyInfo.xcprivacy`; preserve all other legitimate declarations. Ensure both app and share extension include their respective manifest resources. Do not add the template as a second manifest or assert that every target has the same use.
 
-If `UserDefaults` is introduced later, the corresponding category is `NSPrivacyAccessedAPICategoryUserDefaults`. Apple’s reason `CA92.1` is for app-only defaults; `1C8F.1` is for defaults shared among members of the same App Group. The current file-based capture exchange does not itself justify either declaration. Consult the same Apple reference when implementation changes.
+Apple’s current reference maps `NSPrivacyAccessedAPICategoryUserDefaults` reason `CA92.1` to reading and writing data accessible only to the app. This covers the stored appearance choice. System appearance is inherited through SwiftUI rather than reading system UserDefaults keys. Reason `1C8F.1` would cover defaults shared among App Group members; it is not declared because the capture exchange uses files and the appearance preference is app-only.
 
 ## Release check
 

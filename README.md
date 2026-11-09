@@ -2,7 +2,7 @@
 
 Pearls is a focused place for notes, links, images, and files. This project contains a shared SwiftUI app for **Mac and iPhone**, a local Foundation storage package, and an iPhone share extension.
 
-**Delivery status (November 8, 2026):** 20 core tests pass; Mac and iOS Simulator builds pass. Pearls 0.1.0 (1) is installed and launches at `/Applications/Developer/Pearls.app` on the user's Mac. The iPhone build is processed and available through TestFlight as “Pearls by Briggs Kellogg”; the confirmed internal tester is invited to version 0.1.0 build 1. Physical iPhone installation remains for the tester to confirm. See [current release evidence](Release/STATUS.md).
+**Delivery status (November 8, 2026):** Pearls 0.1.0 build 2 adds a saved System/Light/Dark appearance setting. All 20 core tests and Mac/iOS Simulator builds pass. Build 2 is installed at `/Applications/Developer/Pearls.app`; Mac appearance switching and persistence across relaunch are verified. The iPhone build 2 archive and distribution export pass local verification, and upload succeeded at 5:33:22 PM Phoenix. App Store Connect shows build 2 as Processing; TestFlight group assignment remains pending. Build 1 remains the previously verified TestFlight release. Physical iPhone installation remains unverified. See [current release evidence](Release/STATUS.md).
 
 ## Project synchronization
 
@@ -18,6 +18,7 @@ This workflow synchronizes project source. Each device's personal Pearls library
 - Open focused details, edit notes, view images and PDFs, and share originals.
 - Save to the iPhone app from the system share sheet. Captures wait safely in the shared App Group inbox until the app next opens or becomes active.
 - Move items to Recently Deleted and restore them, including after relaunch.
+- Choose System, Light, or Dark in Settings. The choice is saved on each device; System is the default and follows that device's current appearance.
 - Export and import a `.pearlsarchive` collection containing metadata and original files, including Recently Deleted. Imports are additive and refuse conflicting versions of an existing item.
 
 The presentation follows the supplied Bard references: PP Neue York typography, a pale neutral sidebar, a clean canvas, and generous space. Main destination icons remain filled and colored; selection adds a subdued neutral row and stronger label. Utility icons use neutral outlines. Favorites switch from an outline to a filled gold star. The supplied Pearls artwork is bundled unchanged and mechanically packaged into app icon sizes at build time.
