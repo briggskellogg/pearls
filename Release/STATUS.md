@@ -1,6 +1,6 @@
 # Pearls release status
 
-Build 5 branding update is in preparation: separate symbol and PP Neue Montreal name, gold maker mark in a lower corner, transparent Mac icon and opaque iOS default icon. The supplied master and approved maker artwork are retained. Delivery evidence below still describes build 4 until build 5 is installed and processed.
+Build 6 branding update is in preparation: separate symbol and PP Neue Montreal name, gold maker mark in a lower corner, transparent Mac icon and opaque iOS default icon. The supplied master and approved maker artwork are retained. Build 5 was withheld from testers after simulator QA found compressed phone-header text; build 6 corrects intrinsic header sizing. Delivery evidence below still describes build 4 until build 6 is installed and processed.
 
 Current Mac installation and published package: **version 0.1.0 build 4**, from committed source `0238e69f33454c90bf13f0677e68c52d923f4a50`. Build 4 adds optional private iCloud Drive folder sync, retaining each device's offline library and keeping personal contents out of public source/releases and the Proton source mirror.
 

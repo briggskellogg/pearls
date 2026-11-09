@@ -123,6 +123,7 @@ struct PearlsBrandSignature: View {
                 .foregroundStyle(.primary)
                 .lineLimit(1)
         }
+        .fixedSize(horizontal: true, vertical: false)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Pearls")
     }
