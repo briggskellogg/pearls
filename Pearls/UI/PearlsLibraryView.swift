@@ -1,4 +1,7 @@
 import SwiftUI
+#if os(macOS)
+import AppKit
+#endif
 
 extension Notification.Name {
     static let pearlsCaptureRequested = Notification.Name("Pearls.captureRequested")
@@ -26,6 +29,10 @@ struct PearlsLibraryView: View {
     @State private var showingCapture = false
     @State private var showingSettings = false
     @State private var editingNote: PearlsDisplayItem?
+    @State private var syncFolderConnectionError: String?
+    #if os(macOS)
+    @State private var syncFolderPanel: NSOpenPanel?
+    #endif
     @State private var pendingAction: PendingAction?
     @State private var errorMessage: String?
     @FocusState private var searchIsFocused: Bool
@@ -37,7 +44,7 @@ struct PearlsLibraryView: View {
         var color: Color { self == .all ? PearlsTheme.blue : PearlsTheme.gold }
     }
 
-    private enum PendingAction { case importFiles, importArchive, exportArchive, recentlyDeleted }
+    private enum PendingAction { case importFiles, importArchive, exportArchive, recentlyDeleted, connectSyncFolder }
 
     private var displayedItems: [PearlsDisplayItem] {
         items.filter { (destination == .all || $0.isFavorite) && $0.matches(query) }
@@ -76,7 +83,12 @@ struct PearlsLibraryView: View {
         }
         .sheet(isPresented: $showingSettings, onDismiss: performPendingAction) {
             PearlsSettingsView(itemCount: items.count, syncFolder: syncFolder,
-                onSynchronize: onSynchronize, onExport: {
+                onSynchronize: onSynchronize,
+                onChooseSyncFolder: {
+                    pendingAction = .connectSyncFolder
+                    showingSettings = false
+                }, onConnectSyncFolder: connectSyncFolder,
+                connectionError: $syncFolderConnectionError, onExport: {
                 pendingAction = .exportArchive
                 showingSettings = false
             }, onImport: {
@@ -392,6 +404,57 @@ struct PearlsLibraryView: View {
         case .importArchive: onImportArchive()
         case .exportArchive: onExportArchive()
         case .recentlyDeleted: onShowRecentlyDeleted()
+        case .connectSyncFolder:
+            #if os(macOS)
+            // Let SwiftUI finish ending its sheet before presenting AppKit's.
+            DispatchQueue.main.async { presentMacSyncFolderPanel() }
+            #else
+            showingSettings = true
+            #endif
         }
     }
+
+    private func connectSyncFolder(_ result: Result<[URL], Error>) {
+        do {
+            guard let folder = try result.get().first else { return }
+            try syncFolder.connect(to: folder)
+            onSynchronize()
+        } catch {
+            syncFolderConnectionError = error.localizedDescription
+        }
+    }
+
+    #if os(macOS)
+    private func presentMacSyncFolderPanel() {
+        guard syncFolderPanel == nil else { return }
+        let panel = NSOpenPanel()
+        panel.title = "Connect Pearls to iCloud Drive"
+        panel.message = "Choose or create a private folder named Pearls in iCloud Drive."
+        panel.prompt = "Connect"
+        panel.allowedContentTypes = []
+        panel.allowsOtherFileTypes = true
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.canCreateDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.resolvesAliases = false
+        syncFolderPanel = panel
+        let completion: (NSApplication.ModalResponse) -> Void = { response in
+            let selected = response == .OK ? panel.urls : []
+            panel.orderOut(nil)
+            syncFolderPanel = nil
+            DispatchQueue.main.async {
+                if !selected.isEmpty { connectSyncFolder(.success(selected)) }
+                showingSettings = true
+            }
+        }
+        // Settings is no longer present. Never anchor the panel to a sheet or
+        // queue it behind an existing sheet: that leaves two modal lifetimes.
+        if let window = NSApp.mainWindow, window.sheetParent == nil, window.attachedSheet == nil {
+            panel.beginSheetModal(for: window, completionHandler: completion)
+        } else {
+            panel.begin(completionHandler: completion)
+        }
+    }
+    #endif
 }

@@ -1,13 +1,13 @@
 import SwiftUI
 import UniformTypeIdentifiers
-#if os(macOS)
-import AppKit
-#endif
 
 struct PearlsSettingsView: View {
     let itemCount: Int
     @ObservedObject var syncFolder: PearlsSyncFolder
     let onSynchronize: () -> Void
+    let onChooseSyncFolder: () -> Void
+    let onConnectSyncFolder: (Result<[URL], Error>) -> Void
+    @Binding var connectionError: String?
     let onExport: () -> Void
     let onImport: () -> Void
     let onShowRecentlyDeleted: () -> Void
@@ -15,7 +15,6 @@ struct PearlsSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(PearlsAppearance.storageKey) private var appearance: PearlsAppearance = .system
     @State private var showingSyncFolderPicker = false
-    @State private var connectionError: String?
 
     private var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1"
@@ -104,7 +103,7 @@ struct PearlsSettingsView: View {
         .tint(PearlsTheme.blue)
         #if os(iOS)
         .fileImporter(isPresented: $showingSyncFolderPicker, allowedContentTypes: [.folder],
-                      allowsMultipleSelection: false, onCompletion: connectSyncFolder)
+                      allowsMultipleSelection: false, onCompletion: onConnectSyncFolder)
         #endif
         .alert("Couldn’t connect this folder", isPresented: Binding(
             get: { connectionError != nil },
@@ -189,37 +188,10 @@ struct PearlsSettingsView: View {
 
     private func chooseSyncFolder() {
         #if os(macOS)
-        let panel = NSOpenPanel()
-        panel.title = "Connect Pearls to iCloud Drive"
-        panel.message = "Choose or create a private folder named Pearls in iCloud Drive."
-        panel.prompt = "Connect"
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = false
-        panel.canCreateDirectories = true
-        panel.allowsMultipleSelection = false
-        panel.resolvesAliases = false
-        let completion: (NSApplication.ModalResponse) -> Void = { response in
-            guard response == .OK else { return }
-            connectSyncFolder(.success(panel.urls))
-        }
-        if let window = NSApp.keyWindow {
-            panel.beginSheetModal(for: window, completionHandler: completion)
-        } else {
-            panel.begin(completionHandler: completion)
-        }
+        onChooseSyncFolder()
         #else
         showingSyncFolderPicker = true
         #endif
-    }
-
-    private func connectSyncFolder(_ result: Result<[URL], Error>) {
-        do {
-            guard let folder = try result.get().first else { return }
-            try syncFolder.connect(to: folder)
-            onSynchronize()
-        } catch {
-            connectionError = error.localizedDescription
-        }
     }
 
     private func actionRow(_ title: String, subtitle: String, symbol: String, action: @escaping () -> Void) -> some View {
