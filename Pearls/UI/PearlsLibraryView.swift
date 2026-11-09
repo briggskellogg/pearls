@@ -7,8 +7,10 @@ extension Notification.Name {
 
 struct PearlsLibraryView: View {
     var items: [PearlsDisplayItem]
+    @ObservedObject var syncFolder: PearlsSyncFolder
+    let onSynchronize: () -> Void
     let onCreate: (PearlsDraft) async throws -> Void
-    let onUpdateNote: (UUID, String, String) async throws -> Void
+    let onUpdateNote: (UUID, String, String, String, String) async throws -> Void
     let onSetFavorite: (UUID, Bool) async throws -> Void
     let onDelete: (UUID) async throws -> Void
     let onImportFiles: () -> Void
@@ -23,6 +25,7 @@ struct PearlsLibraryView: View {
     @State private var path: [UUID] = []
     @State private var showingCapture = false
     @State private var showingSettings = false
+    @State private var editingNote: PearlsDisplayItem?
     @State private var pendingAction: PendingAction?
     @State private var errorMessage: String?
     @FocusState private var searchIsFocused: Bool
@@ -72,7 +75,8 @@ struct PearlsLibraryView: View {
             })
         }
         .sheet(isPresented: $showingSettings, onDismiss: performPendingAction) {
-            PearlsSettingsView(itemCount: items.count, onExport: {
+            PearlsSettingsView(itemCount: items.count, syncFolder: syncFolder,
+                onSynchronize: onSynchronize, onExport: {
                 pendingAction = .exportArchive
                 showingSettings = false
             }, onImport: {
@@ -82,6 +86,13 @@ struct PearlsLibraryView: View {
                 pendingAction = .recentlyDeleted
                 showingSettings = false
             })
+        }
+        .sheet(item: $editingNote) { note in
+            // The captured note and this presentation outlive its detail route.
+            // A remote edit/deletion must not dismiss or replace an open draft.
+            PearlsNoteEditorView(item: note) { title, text, originalTitle, originalText in
+                try await onUpdateNote(note.id, title, text, originalTitle, originalText)
+            }
         }
         .alert("Couldn’t update your pearl", isPresented: Binding(
             get: { errorMessage != nil },
@@ -107,7 +118,7 @@ struct PearlsLibraryView: View {
                     if let item = items.first(where: { $0.id == id }) {
                         PearlsDetailView(
                             item: item,
-                            onUpdateNote: onUpdateNote,
+                            onEdit: { editingNote = $0 },
                             onSetFavorite: onSetFavorite,
                             onDelete: onDelete,
                             onDeleted: { path.removeAll() }
@@ -315,7 +326,7 @@ struct PearlsLibraryView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                Text("On this device")
+                Text(syncFolder.isConnected ? "Private iCloud folder" : "On this device")
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
             }

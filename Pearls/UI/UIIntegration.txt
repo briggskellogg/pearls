@@ -2,8 +2,10 @@ FINAL API (UI agent; implement root against this):
 
 PearlsLibraryView(
   items: [PearlsDisplayItem],
+  syncFolder: PearlsSyncFolder,
+  onSynchronize: @escaping () -> Void,
   onCreate: @escaping (PearlsDraft) async throws -> Void,
-  onUpdateNote: @escaping (UUID, String, String) async throws -> Void,
+  onUpdateNote: @escaping (UUID, String, String, String, String) async throws -> Void,
   onSetFavorite: @escaping (UUID, Bool) async throws -> Void,
   onDelete: @escaping (UUID) async throws -> Void,
   onImportFiles: @escaping () -> Void,
@@ -21,6 +23,11 @@ kind: PearlsItemKind.note / .link / .image / .file
 PearlsDraft.title and .text; computed .sourceURL classifies single valid HTTP(S) addresses.
 
 Root supplies reconciled items. UI owns navigation/query/filter/capture/detail and local error alerts.
+onUpdateNote arguments are id, newTitle, newText, originalTitle, originalText.
+The editor retains its original fields for the lifetime of the draft; the controller
+must preserve both versions if another device changes the note while it is open.
+Its sheet is owned by the stable library view, so a remote deletion cannot remove
+the detail route and discard the open editor.
 onImportFiles is called only after capture is dismissed.
 onExportArchive/onImportArchive are called only after settings is dismissed.
 The root can attach .fileImporter/.fileExporter to the wrapper view.
@@ -28,7 +35,10 @@ The root can attach .fileImporter/.fileExporter to the wrapper view.
 Interface and brand text use PPNeueMontreal-Regular/Bold. Saved-note reading and
 editing use PPNeueYork-NormalLight; display headings use PPNeueYork-NormalExtrabold.
 All faces have system fallbacks and are bundled and registered by the app.
-Settings clearly labels 'On this device' and offers backup export/import.
+Settings retains the local-copy and backup controls, and offers an explicit
+private iCloud folder connection. The root holds PearlsSyncFolder, calls the
+controller's synchronize(with:) under its security scope, and checks while active
+every 25 seconds and when contentRevision changes. Disconnect never deletes files.
 
 UI completion notes:
 - All screens exist in UI and shared theme in Theme. PDF preview imports system PDFKit.

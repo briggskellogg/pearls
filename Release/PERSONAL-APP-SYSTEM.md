@@ -15,15 +15,15 @@ The generic kit's private-repository default and prohibition on work-Mac filesys
 | Stage | Current evidence | Remaining work |
 | --- | --- | --- |
 | GitHub source | Existing personal repository and main branch; source changes are committed and pushed | Verify the final commit after each release |
-| Proton project source | Existing `[projects]/pearls` local mirror with committed-source hashes | Verify the new local receipt after source changes; remote Proton upload remains separately unverified |
-| TestFlight | Version 0.1.0 build 2 processed and assigned to Briggs Internal; physical phone installation unverified | Build 3 is preparing; validate and deliver from its committed revision |
-| iCloud runtime data | Main library is local Application Support; no iCloud entitlement or CloudKit implementation | Verify the intended personal account/container, implement offline changes/conflicts/deletions/assets, and verify production behavior across devices |
-| Portable personal exports | Manual `.pearlsarchive` includes records and originals, limited to 100 MiB; imports reject differing same-ID records | Add complete versioned/checksummed exports to a verified personal iCloud Drive destination, produced by iPhone without the Mac; do not claim current manual import is cloud conflict resolution |
+| Proton project source | Recorded 83-file committed-source snapshot has matching hashes and native Proton client upload-completion checkmarks | Verify subsequent receipts; independent remote download/restore remains untested |
+| TestFlight | Build 3 validation and Mac installation passed; Apple processed the iPhone build and it is assigned to Briggs Internal | Physical phone installation remains unverified |
+| iCloud runtime data | Build 4 source adds optional private user-selected iCloud Drive folder exchange, retaining local offline storage; no CloudKit database | Finish build/release validation; user chooses the same private folder on both Apple devices; verify real cross-device behavior |
+| Portable personal data | Existing `.pearlsarchive` export remains manual and limited to 100 MiB. Upcoming build 4 uses a private versioned JSON/original-file tree readable through iCloud for Windows | No live iPhone/Mac/PC delivery, independent dated backup, or restore has been verified; Windows has file access but no native Pearls editor |
 | PC archive | User reports setup ready; no accessible endpoint, approved source paths, archive paths, or restore evidence here | Read only the approved project setup when access is available and verify its exact scope, hydration, snapshots, and restoration |
 | Proton data/release backup | No verified PC upload job or remote archive receipt in this chat | Use approved PC staging and official Proton tooling; verify remote completion and isolated restore |
 | Hosted Apple release | macOS validation workflow exists; signed releases currently use local Xcode access | Establish secure hosted signing/API access, immutable source provenance, artifact retention, and TestFlight processing/group verification |
 
-Existing personal data remains in its current location. No automatic library migration is authorized by this handoff, and no app data is copied during project-source synchronization.
+Existing personal data remains in its current location. The user separately requested private saved-content sync: upcoming build 4 lets the user explicitly connect one private iCloud Drive Pearls folder inside the app. That scoped connection is separate from project publication and broad filesystem backup; no app data is copied during project-source synchronization. No folder has actually been connected or tested live. See `PRIVATE-SYNC-SETUP.md`.
 
 ## Source and release artifacts for the PC
 
@@ -36,6 +36,8 @@ These are proposed relative conventions, not verified or created PC directories:
 | Signed build and recovery artifacts | `<approved-PC-archive-root>/pearls/Releases/<version>/<build>/<git-sha>/` | `<approved-Proton-archive-root>/pearls/Releases/` |
 
 Keep the PC archive outside live iCloud and Proton source folders. Do not infer these roots from the existing Mac source-mirror path or create them until the actual PC configuration is available. Do not relocate the already authorized source mirror to adopt this layout.
+
+Build 3 now has a verified local five-file package under `build/releases/Pearls-0.1.0-build-3/`, retaining its signed IPA, dSYMs, archive, release manifest, and checksums. The manifest distinguishes app source `2f31ec48b07b24c5343a163e5f5cd4022c686d3a` from packaging implementation `4ad802bcb549ac0fe31abeb80ebe51242f3f5d0e`. The [GitHub prerelease `v0.1.0-build.3`](https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.3) now retains all five files, with server-reported hashes matching the local package. PC retrieval/restoration remains unverified.
 
 The PC should retrieve only this approved repository/revision and its verified release artifacts through authenticated GitHub access. Never enumerate and archive every accessible repository. Source backups should retain the exact commit, repository identity, source archive or Git bundle, and checksums. Releases should retain the signed IPA or supported app package, dSYMs, commit/build manifest, SHA-256 checksums, release receipt, and practical `.xcarchive`. Do not include `.p8`/`.p12` signing secrets, keychains, credentials, or personal libraries in code or release packages.
 

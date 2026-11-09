@@ -15,8 +15,12 @@ import re
 import shutil
 import stat
 import subprocess
+import sys
 import tempfile
 import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from private_data_guard import PrivateDataError, ensure_public_file
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "https://github.com/briggskellogg/pearls"
@@ -33,6 +37,13 @@ class ReleaseError(Exception):
 def require(condition, message):
     if not condition:
         raise ReleaseError(message)
+
+
+def public_input(name, data):
+    try:
+        ensure_public_file(name, data)
+    except PrivateDataError as error:
+        raise ReleaseError(str(error)) from error
 
 
 def command(*args):
@@ -106,6 +117,7 @@ def archive_files(archive):
     result = {}
     for path in files:
         name = path.relative_to(archive).as_posix()
+        public_input(name, path.read_bytes())
         require(name in ("Info.plist", PROVENANCE) or name.startswith(allowed_prefixes),
                 "Unrelated file in archive: " + name)
         if name != PROVENANCE:
@@ -118,6 +130,7 @@ def archive_files(archive):
 
 def inspect_ipa(ipa, destination):
     require(ipa.is_file() and not ipa.is_symlink(), "Expected a regular IPA file.")
+    public_input(ipa.name, ipa.read_bytes())
     with zipfile.ZipFile(ipa) as zipped:
         seen = set()
         for entry in zipped.infolist():
@@ -277,5 +290,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except (ReleaseError, OSError, ValueError, KeyError, subprocess.CalledProcessError, zipfile.BadZipFile) as error:
+    except (ReleaseError, PrivateDataError, OSError, ValueError, KeyError, subprocess.CalledProcessError, zipfile.BadZipFile) as error:
         raise SystemExit("Pearls release: " + str(error))

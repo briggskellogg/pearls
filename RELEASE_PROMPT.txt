@@ -8,6 +8,8 @@ Apply the reusable personal-app-system instructions below with these explicit us
 4. The user reports the PC setup is fine, but this chat has no verified PC endpoint, personal folder allowlist, archive path, or backup/restore evidence. Do not treat that report as an executed backup or infer the missing paths. Finish authorized source synchronization without asking the same destination question again. Broader PC/iCloud personal-data backup jobs remain disabled until their precise sources and destinations can be verified.
 5. Use project-destinations.json as a non-secret destination/status map. It is not an active scheduler and does not configure CloudKit, Windows, Proton upload jobs, or CI signing. Existing scripts read their documented local configuration, not this map unless explicitly updated to do so.
 
+6. The user later explicitly requested private saved contents across iPhone, Mac, and PC, never in GitHub. Upcoming build 4 implements optional content exchange through one dedicated private iCloud Drive Pearls folder selected by the user inside the app. The local library remains available offline. Windows can access JSON/original files through iCloud for Windows; this is not a native Windows editor. This runtime grant does not authorize placing any saved contents in the public repository, public release assets, or Proton project-source mirror. No private folder has been connected or verified live by this work, and no Proton personal-library backup is configured.
+
 The adopted reusable instructions follow verbatim.
 
 ---

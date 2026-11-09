@@ -28,8 +28,8 @@
     "slug": "pearls",
     "public_app_name": "Pearls by Briggs Kellogg",
     "naming_convention": "[app name] by Briggs Kellogg",
-    "source_revision_verified": "86f488d4f9fc01222462f93a8dfa25d549f692f1",
-    "source_revision_note": "Last verified synced commit before this configuration update; use the current Git and Proton receipt for subsequent commits."
+    "source_revision_verified": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+    "source_revision_note": "Verified app-source revision and Proton snapshot; packaging revision is recorded separately. Check the current receipt for later documentation commits."
   },
   "github": {
     "repository": "briggskellogg/pearls",
@@ -43,8 +43,11 @@
     "validation_runner": "macos-latest",
     "release_workflow": null,
     "macos_runner": null,
-    "release_artifact_staging": null,
-    "artifact_retention_days": null
+    "release_artifact_staging": "build/releases/Pearls-0.1.0-build-3",
+    "artifact_retention_days": null,
+    "release_artifact_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.3",
+    "prerelease_tag": "v0.1.0-build.3",
+    "release_artifact_server_digests_verified": true
   },
   "apple": {
     "team_id": "24KAG7M42P",
@@ -81,31 +84,76 @@
     "hosted_signing_credential_store_reference": null,
     "latest_verified_release": {
       "version": "0.1.0",
-      "build": 2,
-      "testflight_build_id": "5395a00e-1e51-4f17-a464-496c88182009",
+      "build": 3,
+      "testflight_build_id": "4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
       "state": "processed_and_assigned_to_existing_internal_group",
       "physical_iphone_installation_verified": false,
       "receipt_path": "Release/release-target.json",
-      "expiration_from_apple": null
+      "expiration_from_apple": null,
+      "source_revision": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a"
+    },
+    "latest_verified_mac_release": {
+      "version": "0.1.0",
+      "build": 3,
+      "source_revision": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+      "install_path": "/Applications/Developer/Pearls.app",
+      "font_registration": "all_five_passed",
+      "appearance_qa": "light_dark_and_persisted_system_passed"
     },
     "release_in_preparation": {
       "version": "0.1.0",
-      "build": 3,
-      "status": "source_changes_preparing_clean_commit_before_native_build",
+      "build": 4,
+      "status": "core_36_and_mac_debug_ios_simulator_compile_passed_release_delivery_pending",
       "changes": [
-        "PP Neue Montreal interface and brand typography",
-        "PP Neue York headings and saved-note reading"
+        "Optional private iCloud Drive folder exchange for saved content",
+        "Local offline library retained",
+        "Public source/release private-data leak guards"
       ],
       "source_revision": null,
       "archive": null,
-      "upload_verified": false
+      "upload_verified": false,
+      "live_private_folder_connected": false,
+      "cross_device_sync_verified": false,
+      "validation": {
+        "core_tests_passed": 36,
+        "synthetic_sync_fixtures_only": true,
+        "independent_core_review_findings_resolved": 3,
+        "final_native_validation": "36_core_tests_mac_debug_and_ios_simulator_compilation_passed",
+        "live_cross_device_sync": "unverified_no_folder_connected",
+        "native_validation_log": "build/logs/build4-validation-final.log",
+        "mac_release_installation_runtime": "pending",
+        "signing_testflight_delivery": "pending"
+      }
     }
   },
   "icloud": {
-    "sync_implementation": null,
+    "sync_implementation": "upcoming_build_4_user_selected_private_icloud_drive_folder",
     "production_schema_verified": false,
     "exports_relative_path": null,
-    "iphone_export_without_mac_verified": false
+    "iphone_export_without_mac_verified": false,
+    "implementation_state": "source_in_preparation_not_live_connected_or_verified",
+    "cloudkit_used": false,
+    "cloudkit_schema_status": "not_applicable_user_selected_files_no_CloudKit_database",
+    "access_model": "explicit_folder_picker_and_device_local_security_scoped_access",
+    "private_folder_path": null,
+    "folder_name_required": "Pearls",
+    "same_folder_required_on_apple_devices": true,
+    "folder_must_be_private_unshared": true,
+    "runtime_schedule": "checks_while_app_open_and_active",
+    "native_windows_editor": false,
+    "windows_access": "JSON and original files via iCloud for Windows; not verified on user PC",
+    "local_library_available_offline": true,
+    "live_sync_verified": false,
+    "disconnect_deletes_local_or_cloud_files": false,
+    "automatic_history_pruning": false,
+    "protocol_files": [
+      "pearls-sync.json",
+      "versions/",
+      "originals/"
+    ],
+    "private_content_in_public_source_allowed": false,
+    "private_content_in_proton_project_mirror_allowed": false,
+    "proton_library_backup_configured": false
   },
   "windows_pc": {
     "os": "Windows 11 Pro",
@@ -116,7 +164,9 @@
     "source_archive_root": null,
     "release_archive_root": null,
     "task_names": [],
-    "user_report": "User reports PC setup is fine; no verified endpoint or archive/restore evidence available in this chat."
+    "user_report": "User reports PC setup is fine; no verified endpoint or archive/restore evidence available in this chat.",
+    "native_pearls_editor_available": false,
+    "private_content_file_access": "planned through same personal iCloud Drive folder; actual Windows configuration/download not verified"
   },
   "proton": {
     "tool": "official_proton_drive_cli",
@@ -140,15 +190,16 @@
     "authorized_notification_channel": null
   },
   "verification": {
-    "icloud_sync": "not_configured",
+    "icloud_sync": "build_4_source_in_preparation_no_private_folder_connected_live_sync_unverified",
     "pc_restore_without_work_mac": "not_verified",
     "proton_restore_without_work_mac": "not_verified",
     "last_receipt_path": "Release/STATUS.md",
     "github": "verified_at_source_revision_verified",
-    "testflight": "build_2_processed_and_assigned_physical_install_unverified",
+    "testflight": "build_3_processed_and_assigned; physical_install_unverified",
     "pc_archive": "unverified_no_accessible_endpoint",
     "proton_personal_data_backup": "not_configured",
-    "proton_project_source_copy": "verified_local_receipt_only_remote_upload_unverified"
+    "proton_project_source_copy": "native_client_upload_completion_verified_for_recorded_snapshot; remote_restore_unverified",
+    "public_data_boundary": "private_data_guard_10_source_sync_19_release_package_11_synthetic_tests_passed"
   },
   "source_mirror": {
     "enabled": true,
@@ -171,9 +222,12 @@
     "command": "python3 scripts/sync-project.py --push",
     "verification_command": "python3 scripts/sync-project.py --check",
     "receipt_filename": ".pearls-project-sync.json",
-    "last_verified_commit": "86f488d4f9fc01222462f93a8dfa25d549f692f1",
-    "last_verified_file_count": 76,
-    "proton_remote_upload_verified": false
+    "last_verified_commit": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+    "last_verified_file_count": 83,
+    "proton_remote_upload_verified": true,
+    "proton_upload_verification_method": "Native Proton Drive client Uploaded/Modified completion checkmarks for named Pearls files, including fonts, configuration, and receipt",
+    "proton_remote_download_restore_verified": false,
+    "private_data_guard": "scripts/private_data_guard.py validates source snapshot/reachable history and release inputs; private collections are excluded"
   },
   "configuration_consumers": {
     "status": "destination map and instructions only; no new scheduler or backup process activated",

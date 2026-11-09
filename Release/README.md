@@ -2,7 +2,7 @@
 
 This folder contains the release handoff for the first Pearls Mac and iPhone apps. The original source was prepared on Linux. On November 8, 2026, all 20 core tests and both platform compile checks passed on the user's Mac, and the local Mac app was installed and launched from `/Applications/Developer/Pearls.app`. Distribution signing, upload, processing, and the TestFlight invitation are complete. Physical iPhone installation and runtime acceptance remain for confirmation. [STATUS.md](STATUS.md) records current evidence and blockers; the commands below describe the release process.
 
-Version 0.1 stores each device’s main library in the app’s own `Application Support/Pearls` directory. Archive import/export is the transfer mechanism; there is no automatic cloud synchronization. The iOS App Group holds only the shared capture inbox used by Pearls and its share extension. Enabling or changing App Group access does not switch the main library’s storage path.
+Released builds through 0.1.0 build 3 store each device’s main library in the app’s own `Application Support/Pearls` directory and use archive import/export for transfer. Upcoming build 4 retains that local offline copy and adds optional exchange through one explicitly chosen private iCloud Drive folder. This folder feature is not connected or verified live yet; see `PRIVATE-SYNC-SETUP.md`. The iOS App Group holds only the shared capture inbox used by Pearls and its share extension. Enabling or changing App Group access does not switch the main library’s storage path.
 
 ## Project and commands
 
@@ -136,4 +136,4 @@ GitHub documents its [hosted runners](https://docs.github.com/en/actions/referen
 
 ## Confirmed TestFlight recipient
 
-Briggs explicitly confirmed the recipient address in the private local release configuration for the Pearls TestFlight invitation on November 8, 2026. The address is kept in the ignored `.pearls-release.local.json`; public release metadata omits it. The authenticated Mac signing certificate identifies team `24KAG7M42P`; Xcode reached that team during provisioning. The recipient's existing invitation to the internal Briggs group is retained, and version 0.1.0 build 2 is processed and assigned to that group. Physical iPhone installation remains unverified. Current delivery state is recorded in `STATUS.md`.
+Briggs explicitly confirmed the recipient address in the private local release configuration for the Pearls TestFlight invitation on November 8, 2026. The address is kept in the ignored `.pearls-release.local.json`; public release metadata omits it. The authenticated Mac signing certificate identifies team `24KAG7M42P`; Xcode reached that team during provisioning. The recipient's existing invitation to the internal Briggs group is retained, and version 0.1.0 build 3 is processed and assigned to that group. Build 4 is in preparation. Physical iPhone installation remains unverified. Current delivery state is recorded in `STATUS.md`.

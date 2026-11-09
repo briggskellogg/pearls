@@ -8,13 +8,14 @@ extension Notification.Name {
 @MainActor
 struct PearlsApp: App {
     @StateObject private var library = LibraryController()
+    @StateObject private var syncFolder = PearlsSyncFolder()
     @AppStorage(PearlsAppearance.storageKey) private var appearance: PearlsAppearance = .system
 
     init() { FontRegistration.registerBundledFonts() }
 
     var body: some Scene {
         WindowGroup("Pearls") {
-            PearlsRootView(library: library)
+            PearlsRootView(library: library, syncFolder: syncFolder)
                 .preferredColorScheme(appearance.colorScheme)
         }
         #if os(macOS)

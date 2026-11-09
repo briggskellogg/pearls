@@ -1,76 +1,88 @@
 # Pearls release status
 
-Current source: **version 0.1.0 build 3 in preparation**, with PP Neue Montreal interface/brand typography and PP Neue York headings and saved-note reading. Build 3 must be committed, validated, packaged with its source revision, and delivered before it is described as released.
+Current Mac installation and packaged source: **version 0.1.0 build 3**, verified November 8, 2026 with Xcode 27.2 (27B52). Build 3 uses PP Neue Montreal for interface/brand typography and PP Neue York for headings and saved-note reading. Its System/Light/Dark preference remains available and preserved across the upgrade.
 
-Latest verified Mac installation and TestFlight release: **version 0.1.0 build 2**, verified November 8, 2026 on the user's Mac with Xcode 27.2 (27B52). The results below describe build 2 unless explicitly marked otherwise.
+**Build 4 is pending:** source work adds optional private saved-content exchange through an explicitly selected iCloud Drive Pearls folder. All 36 core tests pass, including convergence, stale deletion, interrupted transfers, bounded progress, remote-original integrity, metadata capacity, and concurrent draft preservation. The independent review's three findings are resolved with regression coverage. Final native validation passed all 36 core tests, Mac Debug compilation, and iOS Simulator compilation; evidence is `build/logs/build4-validation-final.log`. Mac Release installation/runtime checks and signing/TestFlight delivery remain pending. iPhone and Mac retain local offline libraries; Windows receives JSON/original files through iCloud for Windows, with no native Windows editor. No folder is connected and no live cross-device test has run. The build 3 evidence below remains unchanged.
 
-Build 2 adds System/Light/Dark appearance in Settings. System is the default; the selected choice persists on that device. The main app's privacy manifest declares its app-only UserDefaults preference, while the share extension retains a separate manifest without that API declaration.
+The iPhone build 3 upload succeeded, Apple processing completed, and the existing Briggs internal group is selected for build 3. Tester availability is verified in App Store Connect; physical iPhone installation remains unverified.
+
+## Build 3 verification
 
 | Check | Evidence / result |
 | --- | --- |
+| App source | Clean committed revision `2f31ec48b07b24c5343a163e5f5cd4022c686d3a` |
+| Packaging implementation | Clean revision `4ad802bcb549ac0fe31abeb80ebe51242f3f5d0e`; recorded separately from the unchanged app source |
 | Core tests | 20 XCTest cases passed, 0 failures |
-| Mac Debug compile | Passed |
-| iOS Simulator compile | Passed, including embedded PearlsShare extension |
-| Mac Release build | Passed |
-| Mac local signature | `codesign --verify --deep --strict` passed |
-| Mac installation | `/Applications/Developer/Pearls.app`, version 0.1.0 build 2; previous app retained as a timestamped backup |
-| Mac appearance runtime checks | Default System verified; Dark renders and remains selected after quit/relaunch; switching Dark to System immediately follows the current light macOS appearance; Light is selectable. App left on System. |
-| Device archive | Build 2 iPhoneOS archive completed: `build/ios/Pearls-TestFlight-build-2.xcarchive` |
-| Distribution export | Build 2 passed local verification; both signatures and distribution profiles permit `group.com.briggskellogg.pearls` |
-| Development signing | Apple reports no registered devices available to create development provisioning profiles; user selected TestFlight instead |
-| Physical iPhone installation | Build 2 is available to the existing internal TestFlight group; installation on the physical phone is not yet verified |
-| App Store Connect / TestFlight | Build 2 upload succeeded at 5:33:22 PM Phoenix on November 8, 2026. Apple processed version 0.1.0 build 2, and its detail page shows 1 group: Briggs / Internal / 1 tester. The group assignment and selected checkmark are verified; the tester's existing invitation is retained. |
-| TestFlight notes | Saved What to Test: “Settings → Appearance now offers System, Light, and Dark. System follows your device’s appearance, and your choice is remembered when you reopen Pearls.” |
+| Mac Debug / Release | Both builds passed |
+| iOS Simulator | Passed, including the embedded share extension |
+| Fonts | All five registered: PP Neue Montreal Regular/Bold and PP Neue York Normal Light/Medium/Extrabold |
+| Mac installation | `/Applications/Developer/Pearls.app`, version 0.1.0 build 3; signature verified and prior app retained as a backup |
+| Mac runtime | Light and Dark render correctly; System remains saved through the upgrade and follows the current dark system appearance. App left on System. |
+| Device archive / distribution export | Build 3 archive and signature/profile/App Group verification passed |
+| App Store Connect upload | Succeeded once on November 8 at 8:44:38 PM Phoenix; no upload errors |
+| Apple processing / tester assignment | Build 3 ID `4325f9c0-5220-4c4a-8eb9-8f4833e11d9a` completed processing; the existing Briggs internal group is assigned and its selected state verified in App Store Connect |
+| Physical iPhone installation | Unverified |
 
-The previous native failures were caused by restricted macOS file-coordination, cache, and compiler-plugin access. Re-running with normal native access passed without changing app source.
+The verified Mac checks do not establish all journeys in `DEVICE-CHECKS.md`, physical iPhone behavior, share-extension behavior, or accessibility acceptance.
 
-The verified Mac appearance checks do not establish every runtime acceptance check. The remaining journeys in `DEVICE-CHECKS.md`, physical iPhone installation and behavior, share-extension behavior, and accessibility still need verification.
+## Retained release package
 
-## Previous TestFlight release: build 1
+`build/releases/Pearls-0.1.0-build-3/` contains five verified files:
 
-Version 0.1.0 build 1 uploaded successfully at 5:10:47 PM Phoenix on November 8, 2026. Apple processed it and assigned it to the internal Briggs group. App Store Connect showed the confirmed internal tester as **Invited**, with 1 tester and 1 build in the group. This is historical evidence for build 1; it does not establish build 2 availability.
+- `Pearls-0.1.0-build-3.ipa`
+- `Pearls-0.1.0-build-3-dSYMs.zip`
+- `Pearls-0.1.0-build-3.xcarchive.zip`
+- `release-manifest.json`
+- `SHA256SUMS`
+
+The manifest records the app source and packaging revisions separately, binary/dSYM identities, Apple team/bundle/build metadata, and artifact checksums. No signing keys or personal library are included. The [GitHub prerelease `v0.1.0-build.3`](https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.3) is published at app source revision `2f31ec48b07b24c5343a163e5f5cd4022c686d3a`. All five uploaded assets are present, and GitHub-reported SHA-256 digests match the local files. TestFlight availability is verified. PC retrieval and restoration remain unverified.
+
+## Source synchronization and Proton evidence
+
+The app source revision `2f31ec48b07b24c5343a163e5f5cd4022c686d3a` was pushed to GitHub and mirrored to the existing Proton `[projects]/pearls` folder, with 83 source files checked against the local SHA-256 receipt. The native Proton Drive client showed Uploaded/Modified completion checkmarks for the new Pearls files, including fonts, configuration, and `.pearls-project-sync.json`.
+
+This is client-confirmed upload completion for that project source snapshot. It is not an isolated remote download, restore test, personal-library backup, or proof that later receipt changes have uploaded. Verify the final source/documentation commit and its receipt after completing the release.
 
 ## Evidence
 
-- Build 2 core tests and Mac/iOS Simulator compilation: `build/logs/build2-validation.log`.
-- Build 2 Mac Release build: `build/logs/build2-mac-release.log`.
-- Build 2 Mac installation: `build/logs/build2-mac-install.log`; the installed Info.plist confirms version 0.1.0 build 2, and strict signature verification passed.
-- Build 2 archive and verified distribution export: `build/logs/build2-testflight-prepare.log`.
-- Build 2 successful upload: `build/logs/build2-testflight-upload.log`; Xcode reported upload success at 5:33:22 PM Phoenix and exited successfully.
-- App Store Connect processed build 2 ID: `5395a00e-1e51-4f17-a464-496c88182009`, uploaded November 8 at 5:33 PM Phoenix; Briggs internal group assignment verified in the UI.
-- Build 2 TestFlight assignment screenshot: `outputs/pearls-testflight-build-2.png` in the takeover chat workspace, outside this repository.
-- Build 2 Mac appearance screenshot: `outputs/pearls-appearance-system.png` in the takeover chat workspace, outside this repository.
-- Initial native validation: imported source workspace `build/logs/takeover-validation.log`.
-- Canonical checkout Mac installation: `build/logs/takeover-install.log`.
-- Canonical checkout signing attempt: `build/logs/takeover-archive.log`.
-- Distribution export: `build/logs/takeover-testflight-group-export.log`.
-- Initial upload attempt: `build/logs/takeover-testflight-upload.log`.
-- Successful upload: `build/logs/takeover-testflight-upload-after-app-record.log`.
-- Previous TestFlight build 1: `2aba377c-93d4-4440-b7f7-921f309c5f61`; internal group: `53c9d19e-50ee-4ba6-8550-cf56d5e56438`.
+- Core tests and Mac/iOS compilation: `build/logs/build3-validation.log`.
+- Mac Release build and installation: `build/logs/build3-mac-release.log`, `build/logs/build3-mac-install.log`.
+- All five font registrations: `build/logs/build3-font-verification.log`.
+- iPhone archive and verified export: `build/logs/build3-testflight-prepare.log`.
+- Release package: `build/logs/build3-release-package.log` and the package's `release-manifest.json` / `SHA256SUMS`.
+- Successful upload: `build/logs/build3-testflight-upload.log`.
+- [Build 3 source CI](https://github.com/briggskellogg/pearls/actions/runs/42557515358): passed for the committed app source.
 
-Logs and derived products are local and ignored by Git. No private signing material is committed. Main app library storage remains local to each device; source mirroring to Proton Drive is separate.
+Build logs and products are ignored by Git. Signing material and personal libraries remain outside the project source mirror.
 
-## Continuing the release
+## Previous verified TestFlight releases
 
-1. Commit the complete build 3 source before building. Validate, package the signed build/dSYMs/archive with a commit-and-checksum manifest, then deliver that exact revision. Retain the uploaded build 2 archive, `build/ios/Pearls-TestFlight-build-2.xcarchive`; do not repeat its successful upload. The original build 1 unsigned archive's first export omitted App Groups and must not be uploaded.
-2. App Store Connect record: [Pearls by Briggs Kellogg](https://appstoreconnect.apple.com/apps/6832381625/distribution), app ID `6832381625`.
-3. The already invited tester can install **Pearls by Briggs Kellogg**, version 0.1.0 build 2, through TestFlight. Record actual phone installation and runtime acceptance separately.
-4. Update this record, commit, and run `python3 scripts/sync-project.py --push` followed by `--check`.
+Build 2 uploaded on November 8 at 5:33:22 PM Phoenix, completed Apple processing, and was assigned to Briggs Internal with one tester. Its build ID is `5395a00e-1e51-4f17-a464-496c88182009`. The existing invitation is retained. Build 2 introduced the saved appearance setting and passed Mac appearance/persistence checks. Supporting logs use the `build2-` prefix; the takeover chat's `outputs/pearls-testflight-build-2.png` records assignment.
+
+Build 1 uploaded on November 8 at 5:10:47 PM Phoenix, completed processing, and was assigned to the same internal group. Its ID is `2aba377c-93d4-4440-b7f7-921f309c5f61`. These records do not by themselves establish build 3 availability.
+
+## Remaining delivery steps
+
+1. Retain the verified build 3 TestFlight delivery and existing tester group assignment. Do not repeat the successful upload or send a duplicate invitation.
+2. Retain the published five-file GitHub prerelease and verified digests. Record PC retrieval/restoration only when separately verified; do not recreate the release or upload duplicate assets.
+3. Record the final delivery facts, commit the receipt updates, and run `python3 scripts/sync-project.py --push` followed by `--check`. Verify Proton's completion state for that final update.
+4. Record actual phone installation and runtime acceptance separately.
+
+App Store Connect record: [Pearls by Briggs Kellogg](https://appstoreconnect.apple.com/apps/6832381625/distribution), app ID `6832381625`. Preserve the established team, bundle IDs, and Briggs group. Keep older valid archives; the original build 1 export that omitted App Groups must not be uploaded.
 
 ## Personal app system
 
-The reusable instructions are adopted in `RELEASE_PROMPT.txt`, with the user's explicit public-repository and scoped source-mirror exceptions. `project-destinations.json` records verified non-secret destinations; it is a status map, not an active backup or release scheduler.
+`RELEASE_PROMPT.txt` adopts the reusable instructions with explicit public-repository and scoped source-mirror exceptions. `project-destinations.json` records destinations and unknowns; it is not a running backup or release scheduler.
 
-- GitHub and the local Proton `[projects]/pearls` source copy: retain the established tracked-source-only workflow and verify each completed commit. No personal app library or ignored local files are copied.
-- iCloud runtime sync and independent iPhone-to-iCloud exports: **NOT CONFIGURED**. Existing `.pearlsarchive` export/import is manual.
-- PC archive: **PENDING VERIFICATION**. The user reports setup is ready, but this chat has no verified endpoint, exact personal source/target paths, or restore-test result.
-- Proton personal-data/release archive: **NOT CONFIGURED HERE**; the existing local source mirror is separate, and its cloud upload has not been independently verified.
-- Hosted signing, TestFlight renewal, and backup schedules: **NOT CONFIGURED**. Existing hosted validation remains available.
+- GitHub source: **VERIFIED** for the recorded app revision; final documentation sync follows release completion.
+- TestFlight: build 3 **VERIFIED** processed and assigned to the existing Briggs internal group. Physical iPhone installation is unverified.
+- Proton project source: **VERIFIED CLIENT UPLOAD** for the recorded 83-file snapshot, with no remote restore test.
+- Private iCloud content sync: **PENDING BUILD 4 / NOT CONNECTED**. User-selected file-based sync is being implemented; no CloudKit database is used, and no live cross-device behavior or independent backup has been verified. Build 3 archive transfer remains manual. See `PRIVATE-SYNC-SETUP.md`.
+- PC archive: **PENDING VERIFICATION**. The user reports setup is ready, but no endpoint, exact personal paths, or restore result is available here.
+- Proton personal-data/release archive and hosted signing/renewal schedules: **NOT CONFIGURED HERE**. No broad filesystem collection, new schedule, data migration, or pruning was enabled.
 
-The remaining source/release artifact plan and hosted release prerequisites are in `PERSONAL-APP-SYSTEM.md`. No broad filesystem collection, new schedule, data migration, or backup pruning was enabled.
+`PERSONAL-APP-SYSTEM.md` retains the PC/archive and hosted release prerequisites. The existing project source mirror is separate from those broader backups.
 
-## Repository validation
+## Public-source privacy guard
 
-Build 2 source commit `f9e48da31f8b65e16062ba7564855b192544df5a` was pushed to GitHub and mirrored to the local Proton project folder, with 76 source files verified. Proton's subsequent cloud upload remains a separate client operation.
-
-[Build 2 GitHub Actions validation](https://github.com/briggskellogg/pearls/actions/runs/42540982745) is in progress for that source commit. The local tests and platform builds have passed as recorded above. [Earlier GitHub Actions validation](https://github.com/briggskellogg/pearls/actions/runs/42538591024) passed for commit `f4b8567`, including sync safety tests, the core XCTest suite, and both platform builds.
+The publication guard is implemented and its synthetic checks pass: 10 private-data guard tests, 19 source-sync tests, and 11 release-package tests. Known library/archive/sync documents, original/private trees, malformed identifiable JSON, and signing/local secrets are rejected before source publication or package extraction. The source guard also rejects private data in reachable Git history after a file is deleted from HEAD. Legitimate app artwork/fonts remain accepted. These tests did not read or copy the user's saved contents and are not live cloud-sync tests.

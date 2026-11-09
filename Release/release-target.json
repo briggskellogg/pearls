@@ -6,16 +6,17 @@
   },
   "apple_developer_team_id": "24KAG7M42P",
   "version": "0.1.0",
-  "build": 2,
+  "build": 3,
   "status": {
-    "native_build": "Build 2: 20 core tests, Mac and iOS Simulator compilation passed 2026-11-08",
-    "app_store_connect_upload": "Build 2 upload succeeded 2026-11-08 17:33:22 America/Phoenix; Apple processing complete; assigned to the existing Briggs internal group",
-    "testflight_invitation": "Existing confirmed internal tester invitation retained; build 2 Briggs group assignment verified in App Store Connect on 2026-11-08",
-    "mac_installation": "/Applications/Developer/Pearls.app; version 0.1.0 build 2; signature verified; previous app backed up",
-    "mac_appearance": "System default, Dark rendering and persistence after relaunch, immediate switch from Dark to current system appearance, and Light selection verified; left on System",
-    "physical_iphone": "Build 2 available to the existing internal TestFlight group; physical installation not yet verified",
-    "testflight_archive": "build/ios/Pearls-TestFlight-build-2.xcarchive",
-    "distribution_export": "Build 2 signatures and app/extension App Group distribution profiles verified locally"
+    "native_build": "Build 3: 20 core tests, Mac Debug/Release and iOS Simulator compilation passed 2026-11-08",
+    "app_store_connect_upload": "Build 3 upload succeeded once 2026-11-08 20:44:38 America/Phoenix; Apple processing complete; existing Briggs internal group assigned",
+    "testflight_invitation": "Existing confirmed internal tester invitation retained; build 3 Briggs group assignment verified in App Store Connect",
+    "mac_installation": "/Applications/Developer/Pearls.app; version 0.1.0 build 3; signature verified; previous app backed up",
+    "mac_appearance": "Light and Dark verified; System choice persisted through upgrade and follows current dark system appearance; left on System",
+    "physical_iphone": "Build 3 available to the existing internal TestFlight group; physical installation not verified",
+    "testflight_archive": "build/ios/Pearls-TestFlight-build-3.xcarchive",
+    "distribution_export": "Build 3 signatures and app/extension App Group distribution profiles verified locally",
+    "font_registration": "All five PP Neue Montreal/PP Neue York fonts registered successfully"
   },
   "app_store_connect": {
     "app_id": "6832381625",
@@ -24,21 +25,89 @@
     "internal_group": "Briggs",
     "internal_group_id": "53c9d19e-50ee-4ba6-8550-cf56d5e56438",
     "verified_group_tester_count": 1,
-    "what_to_test": "Settings → Appearance now offers System, Light, and Dark. System follows your device’s appearance, and your choice is remembered when you reopen Pearls.",
-    "verified_available_build_number": 2,
-    "build_id": "5395a00e-1e51-4f17-a464-496c88182009",
-    "testflight_url": "https://appstoreconnect.apple.com/teams/69a6de92-aaed-47e3-e053-5b8c7c11a4d1/apps/6832381625/testflight/ios/5395a00e-1e51-4f17-a464-496c88182009"
+    "verified_available_build_number": 3,
+    "build_id": "4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
+    "testflight_url": "https://appstoreconnect.apple.com/teams/69a6de92-aaed-47e3-e053-5b8c7c11a4d1/apps/6832381625/testflight/ios/4325f9c0-5220-4c4a-8eb9-8f4833e11d9a",
+    "previous_verified_release_notes": {
+      "build": 2,
+      "what_to_test": "Settings \u2192 Appearance now offers System, Light, and Dark. System follows your device\u2019s appearance, and your choice is remembered when you reopen Pearls."
+    }
   },
   "github_visibility": "public",
+  "artifact_package": {
+    "local_directory": "build/releases/Pearls-0.1.0-build-3",
+    "manifest": "release-manifest.json",
+    "checksums": "SHA256SUMS",
+    "file_count": 5,
+    "app_source_revision": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+    "packaging_source_revision": "4ad802bcb549ac0fe31abeb80ebe51242f3f5d0e",
+    "artifacts": [
+      {
+        "bytes": 2031837,
+        "file": "Pearls-0.1.0-build-3-dSYMs.zip",
+        "sha256": "d5cb4978fcf882ced094494ffb2326c4ad960a5d0efb0e916ea8c36093ba1b67"
+      },
+      {
+        "bytes": 1860795,
+        "file": "Pearls-0.1.0-build-3.ipa",
+        "sha256": "e74e7f9addfee88fc34989f07c1784392cf175f851b6489ef02e14f4d7674491"
+      },
+      {
+        "bytes": 3399409,
+        "file": "Pearls-0.1.0-build-3.xcarchive.zip",
+        "sha256": "ef0c72e615ab52935edf6b12478e9db859cdf00f56088c64792090f89908e7a6"
+      }
+    ],
+    "github_release_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.3",
+    "pc_download_verified": false,
+    "restore_verified": false,
+    "github_prerelease_tag": "v0.1.0-build.3",
+    "github_release_target": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+    "github_assets_verified": 5,
+    "github_asset_digests_match_local": true
+  },
+  "source_upload_evidence": {
+    "commit": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a",
+    "file_count": 83,
+    "destination": "Proton Drive [projects]/pearls",
+    "verification": "Native Proton Drive Uploaded/Modified entries and completion checkmarks for project files and receipt",
+    "remote_restore_verified": false
+  },
   "release_in_preparation": {
     "version": "0.1.0",
-    "build": 3,
-    "status": "preparing; commit source before native validation and packaging",
-    "changes": [
-      "PP Neue Montreal interface and brand typography",
-      "PP Neue York headings and saved-note reading"
-    ],
+    "build": 4,
+    "status": "core_36_and_mac_debug_ios_simulator_compile_passed_release_delivery_pending",
     "source_revision": null,
-    "upload_verified": false
+    "upload_verified": false,
+    "changes": [
+      "Optional user-selected private iCloud Drive content sync",
+      "Offline local library retained",
+      "Windows JSON/original file access without native editor",
+      "Private-data publication guards"
+    ],
+    "private_folder_connected": false,
+    "cross_device_sync_verified": false,
+    "validation": {
+      "core_tests_passed": 36,
+      "synthetic_sync_fixtures_only": true,
+      "independent_core_review_findings_resolved": 3,
+      "final_native_validation": "36_core_tests_mac_debug_and_ios_simulator_compilation_passed",
+      "live_cross_device_sync": "unverified_no_folder_connected",
+      "native_validation_log": "build/logs/build4-validation-final.log",
+      "mac_release_installation_runtime": "pending",
+      "signing_testflight_delivery": "pending"
+    }
+  },
+  "private_content_boundary": {
+    "public_github_or_release_inclusion_allowed": false,
+    "proton_source_mirror_inclusion_allowed": false,
+    "private_folder_configured": false,
+    "proton_library_backup_configured": false,
+    "guard_tests": {
+      "private_data_guard": 10,
+      "source_sync": 19,
+      "release_package": 11
+    },
+    "evidence": "Synthetic tests only; no personal library read, copied, or connected by this verification"
   }
 }

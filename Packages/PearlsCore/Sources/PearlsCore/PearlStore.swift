@@ -164,6 +164,33 @@ public final class PearlStore: @unchecked Sendable {
         _ = try mutate(id: id) { $0.deletedAt = nil }
     }
 
+    /// Atomically compares an editor's baseline before saving. A concurrent
+    /// update/deletion is retained and the user's draft becomes a separate note.
+    @discardableResult
+    public func saveNoteDraft(id: UUID, title: String, text: String, originalTitle: String, originalText: String) throws -> Pearl {
+        try withCoordinatedAccess {
+            var document = try readLibrary()
+            let index = document.items.firstIndex { $0.id == id }
+            let existing = index.map { document.items[$0] }
+            let stored: Pearl
+            if var current = existing, current.kind == .note, !current.isDeleted,
+               current.title == originalTitle, current.text == originalText {
+                current.title = Self.title(title, fallback: "Untitled note")
+                current.text = text
+                current.updatedAt = max(current.createdAt, Self.timestamp())
+                stored = current
+                document.items[index!] = current
+            } else {
+                stored = Pearl(kind: .note, title: Self.title(title, fallback: "Untitled note") + " (edit copy)",
+                               text: text, createdAt: Self.timestamp())
+                document.items.append(stored)
+            }
+            try validate(stored)
+            try commit(try encodedLibrary(document))
+            return stored
+        }
+    }
+
     /// Original bytes remain available for deleted records so restoring never requires a download.
     public func attachmentURL(for pearl: Pearl) throws -> URL? {
         try withCoordinatedAccess {
@@ -277,6 +304,56 @@ public final class PearlStore: @unchecked Sendable {
     }
 
     // MARK: - Transactions
+
+    /// Internal synchronization boundary. Public archive import keeps its strict
+    /// same-ID conflict behavior; only the causal sync engine uses this path.
+    func syncTransaction<T>(_ operation: (inout PearlLibraryDocument) throws -> T) throws -> T {
+        try withCoordinatedAccess {
+            var document = try readLibrary()
+            let oldItems = document.items
+            let oldState = document.syncState
+            let result = try operation(&document)
+            if document.items != oldItems || document.syncState != oldState {
+                try commit(try encodedLibrary(document))
+            }
+            return result
+        }
+    }
+
+    func syncValidate(_ item: Pearl) throws { try validate(item) }
+
+    func syncOriginalData(_ item: Pearl) throws -> Data? {
+        guard let attachment = item.attachment else { return nil }
+        let url = try safeOriginalURL(relativePath: attachment.relativePath, itemID: item.id)
+        try validateOriginal(at: url, attachment: attachment)
+        let data = try PearlSyncFiles.read(url, maximum: Int(Self.maximumAttachmentBytes))
+        guard Int64(data.count) == attachment.byteCount else { throw PearlStoreError.attachmentChangedDuringImport }
+        return data
+    }
+
+    func syncOriginalIsPresent(_ item: Pearl) throws -> Bool {
+        guard let attachment = item.attachment else { return true }
+        let url = try safeOriginalURL(relativePath: attachment.relativePath, itemID: item.id)
+        guard fileManager.fileExists(atPath: url.path) else { return false }
+        try validateOriginal(at: url, attachment: attachment)
+        return true
+    }
+
+    func syncInstallOriginal(_ item: Pearl, data: Data) throws {
+        try validate(item)
+        guard let attachment = item.attachment, Int64(data.count) == attachment.byteCount else {
+            throw PearlStoreError.invalidItem("The synchronized original does not match its metadata.")
+        }
+        let destination = try safeOriginalURL(relativePath: attachment.relativePath, itemID: item.id)
+        _ = try writeOriginal(data, to: destination)
+    }
+
+    static func syncSafeFilename(_ filename: String) -> String {
+        // Leave room for a complete SHA-256 prefix in the local filename.
+        var name = safeFilename(filename)
+        while name.utf8.count > 180 { name.removeLast() }
+        return name
+    }
 
     private func insertNew(_ pearl: Pearl) throws -> Pearl {
         try withCoordinatedAccess {

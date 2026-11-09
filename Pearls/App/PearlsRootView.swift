@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 @MainActor
 struct PearlsRootView: View {
     @ObservedObject var library: LibraryController
+    @ObservedObject var syncFolder: PearlsSyncFolder
     @Environment(\.scenePhase) private var scenePhase
     @State private var showingImporter = false
     @State private var importingArchive = false
@@ -31,7 +32,21 @@ struct PearlsRootView: View {
                     .background(.regularMaterial)
                 }
             }
-            .task { if !library.isReady { await library.open() } }
+            .task {
+                if !library.isReady { await library.open() }
+                await synchronize()
+            }
+            .task(id: scenePhase) {
+                guard scenePhase == .active else { return }
+                while !Task.isCancelled {
+                    await synchronize()
+                    do { try await Task.sleep(for: .seconds(25)) }
+                    catch { return }
+                }
+            }
+            .onChange(of: library.contentRevision) { _, _ in
+                Task { await synchronize() }
+            }
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active { Task { await library.receiveSharedItems() } }
             }
@@ -79,9 +94,10 @@ struct PearlsRootView: View {
     @ViewBuilder
     private var content: some View {
         if library.isReady {
-            PearlsLibraryView(items: library.items,
+            PearlsLibraryView(items: library.items, syncFolder: syncFolder,
+                onSynchronize: { Task { await synchronize() } },
                 onCreate: { try await library.create($0) },
-                onUpdateNote: { try await library.updateNote(id: $0, title: $1, text: $2) },
+                onUpdateNote: { try await library.updateNote(id: $0, title: $1, text: $2, originalTitle: $3, originalText: $4) },
                 onSetFavorite: { try await library.setFavorite(id: $0, value: $1) },
                 onDelete: { try await library.delete(id: $0) },
                 onImportFiles: { presentImporter(archive: false) },
@@ -120,6 +136,13 @@ struct PearlsRootView: View {
         guard library.isReady else { return }
         importingArchive = archive
         showingImporter = true
+    }
+
+    private func synchronize() async {
+        guard library.isReady, scenePhase == .active, !Task.isCancelled else { return }
+        await syncFolder.synchronize { folder in
+            try await library.synchronize(with: folder)
+        }
     }
 
     private func exportCollection() {

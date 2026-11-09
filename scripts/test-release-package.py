@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise release provenance and artifact-selection boundaries without signing."""
 import importlib.util
+import json
 from pathlib import Path
 import stat
 import subprocess
@@ -116,6 +117,48 @@ class ReleasePackageTests(unittest.TestCase):
         release.validate_symbol_files(extracted / "Symbols", {identifier})
         with self.assertRaises(release.ReleaseError):
             release.validate_symbol_files(extracted / "Symbols", {"4FD4E09F-9C68-342D-B868-B4DC1BEE7001"})
+
+    def test_ipa_rejects_private_documents_inside_plausible_app_resources(self):
+        for index, format_name in enumerate(("com.pearls.library", "com.pearls.archive", "com.pearls.sync", "com.pearls.sync.version")):
+            with self.subTest(format=format_name):
+                ipa = self.root / ("private-resource-" + str(index) + ".ipa")
+                destination = self.root / ("private-extract-" + str(index))
+                with zipfile.ZipFile(ipa, "w") as zipped:
+                    zipped.writestr("Payload/Pearls.app/Pearls", b"synthetic executable")
+                    zipped.writestr("Payload/Pearls.app/Resources/ordinary-name.dat", json.dumps({
+                        "format": format_name, "schemaVersion": 1,
+                        "items": [{"text": "synthetic-private-note"}],
+                    }))
+                with self.assertRaisesRegex(release.ReleaseError, "Public publication blocked") as caught:
+                    release.inspect_ipa(ipa, destination)
+                self.assertNotIn("synthetic-private-note", str(caught.exception))
+                self.assertFalse(destination.exists(), "Private IPA must be rejected before extraction")
+
+    def test_ipa_rejects_truncated_private_json_before_extraction(self):
+        ipa = self.root / "damaged-resource.ipa"
+        destination = self.root / "damaged-extract"
+        with zipfile.ZipFile(ipa, "w") as zipped:
+            zipped.writestr("Payload/Pearls.app/Resources/cache.bin", b'{"format":"com.pearls.library","items":[')
+        with self.assertRaisesRegex(release.ReleaseError, "private Pearls document header"):
+            release.inspect_ipa(ipa, destination)
+        self.assertFalse(destination.exists())
+
+    def test_ipa_allows_legitimate_artwork_fonts_and_public_manifest(self):
+        ipa = self.root / "public-resources.ipa"
+        destination = self.root / "public-extract"
+        resources = {
+            "Payload/Pearls.app/Pearls": b"synthetic executable",
+            "Payload/Pearls.app/Resources/mark.png": b"\x89PNG\r\nsynthetic artwork",
+            "Payload/Pearls.app/Resources/PPNeueMontreal-Regular.ttf": b"\x00\x01\x00\x00synthetic font",
+            "Payload/Pearls.app/Resources/PPNeueYork-NormalLight.otf": b"OTTOsynthetic font",
+            "Payload/Pearls.app/Resources/build.json": b'{"version":"0.1.0","build":"4","personal_library_included":false}',
+        }
+        with zipfile.ZipFile(ipa, "w") as zipped:
+            for name, data in resources.items():
+                zipped.writestr(name, data)
+        self.assertEqual(release.inspect_ipa(ipa, destination), destination / "Payload/Pearls.app")
+        for name, data in resources.items():
+            self.assertEqual((destination / name).read_bytes(), data)
 
     def test_archive_bytes_and_retained_zip_are_checksummed(self):
         archive = self.archive()

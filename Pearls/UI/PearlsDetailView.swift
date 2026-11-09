@@ -2,12 +2,11 @@ import SwiftUI
 
 struct PearlsDetailView: View {
     let item: PearlsDisplayItem
-    let onUpdateNote: (UUID, String, String) async throws -> Void
+    let onEdit: (PearlsDisplayItem) -> Void
     let onSetFavorite: (UUID, Bool) async throws -> Void
     let onDelete: (UUID) async throws -> Void
     let onDeleted: () -> Void
 
-    @State private var showingNoteEditor = false
     @State private var confirmingDelete = false
     @State private var isWorking = false
     @State private var errorMessage: String?
@@ -66,7 +65,7 @@ struct PearlsDetailView: View {
                 Menu {
                     if item.kind == .note {
                         Button {
-                            showingNoteEditor = true
+                            onEdit(item)
                         } label: {
                             Label("Edit note", systemImage: "pencil")
                         }
@@ -84,11 +83,6 @@ struct PearlsDetailView: View {
                 }
                 .accessibilityLabel("More actions")
                 .disabled(isWorking)
-            }
-        }
-        .sheet(isPresented: $showingNoteEditor) {
-            PearlsNoteEditorView(item: item) { title, text in
-                try await onUpdateNote(item.id, title, text)
             }
         }
         .confirmationDialog("Delete this pearl?", isPresented: $confirmingDelete, titleVisibility: .visible) {
@@ -118,7 +112,7 @@ struct PearlsDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
                 Button {
-                    showingNoteEditor = true
+                    onEdit(item)
                 } label: {
                     Label("Edit note", systemImage: "pencil")
                         .font(PearlsTheme.body(14))
@@ -257,25 +251,29 @@ struct PearlsDetailView: View {
     }
 }
 
-private struct PearlsNoteEditorView: View {
+struct PearlsNoteEditorView: View {
     let item: PearlsDisplayItem
-    let onSave: (String, String) async throws -> Void
+    let onSave: (String, String, String, String) async throws -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var title: String
     @State private var text: String
+    @State private var originalTitle: String
+    @State private var originalText: String
     @State private var isSaving = false
     @State private var errorMessage: String?
     @State private var confirmingDiscard = false
 
-    init(item: PearlsDisplayItem, onSave: @escaping (String, String) async throws -> Void) {
+    init(item: PearlsDisplayItem, onSave: @escaping (String, String, String, String) async throws -> Void) {
         self.item = item
         self.onSave = onSave
         _title = State(initialValue: item.title)
         _text = State(initialValue: item.text)
+        _originalTitle = State(initialValue: item.title)
+        _originalText = State(initialValue: item.text)
     }
 
-    private var hasChanges: Bool { title != item.title || text != item.text }
+    private var hasChanges: Bool { title != originalTitle || text != originalText }
 
     var body: some View {
         NavigationStack {
@@ -335,10 +333,12 @@ private struct PearlsNoteEditorView: View {
         errorMessage = nil
         let editedTitle = title
         let editedText = text
+        let baseTitle = originalTitle
+        let baseText = originalText
         Task { @MainActor in
             defer { isSaving = false }
             do {
-                try await onSave(editedTitle, editedText)
+                try await onSave(editedTitle, editedText, baseTitle, baseText)
                 dismiss()
             } catch {
                 errorMessage = error.localizedDescription

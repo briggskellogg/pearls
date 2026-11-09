@@ -21,5 +21,11 @@ jobs:
           xcodebuild -version
           xcodebuild -showsdks
           swift --version
+      - name: Test project sync safety
+        run: python3 scripts/test-sync-project.py
+      - name: Test private-content publication guard
+        run: python3 scripts/test-private-data-guard.py
+      - name: Test release artifact boundaries
+        run: python3 scripts/test-release-package.py
       - name: Test core and compile both apps
         run: bash scripts/validate-apple.sh

@@ -11,12 +11,16 @@ struct PearlLibraryDocument: Codable {
     let schemaVersion: Int
     var savedAt: Date
     var items: [Pearl]
+    // Optional for compatibility with existing local libraries. Projection and
+    // observed parents commit together, preventing interrupted-sync echoes.
+    var syncState: PearlSyncState?
 
     init(items: [Pearl], savedAt: Date = Date()) {
         format = "com.pearls.library"
         schemaVersion = 1
         self.savedAt = savedAt
         self.items = items
+        syncState = nil
     }
 }
 

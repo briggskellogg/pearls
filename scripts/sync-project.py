@@ -14,6 +14,10 @@ import sys
 import tempfile
 from datetime import datetime, timezone
 
+# Script execution and importlib-based safety tests share this sibling module.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from private_data_guard import PrivateDataError, ensure_public_file, ensure_public_tree
+
 REPOSITORY = "briggskellogg/pearls"
 RECEIPT = ".pearls-project-sync.json"
 ALLOWED_ORIGINS = {
@@ -94,8 +98,31 @@ def snapshot(root):
                 or any(p.endswith(".xcarchive") for p in path.parts)):
             raise SyncError(f"Remove private configuration or build output from Git: {name}")
         data = git(root, "cat-file", "blob", blob)
+        try:
+            ensure_public_file(name, data)
+        except PrivateDataError as error:
+            raise SyncError(str(error)) from error
         files[name] = (data, mode == "100755")
     return commit, files
+
+
+def validate_public_history(root, commit):
+    """A removed private file still leaks when its earlier commit is pushed."""
+    checked = set()
+    for revision in git(root, "rev-list", commit).decode().splitlines():
+        for entry in git(root, "ls-tree", "-rz", "--full-tree", revision).split(b"\0"):
+            if not entry:
+                continue
+            metadata, raw_name = entry.split(b"\t", 1)
+            mode, kind, blob = metadata.decode().split()
+            name = raw_name.decode("utf-8")
+            if kind != "blob" or (name, blob) in checked:
+                continue
+            checked.add((name, blob))
+            try:
+                ensure_public_file(name, git(root, "cat-file", "blob", blob))
+            except PrivateDataError as error:
+                raise SyncError(f"{error}; reachable Git history must be reconciled before publication.") from error
 
 
 def read_receipt(destination):
@@ -122,6 +149,10 @@ def read_receipt(destination):
 
 
 def preflight(destination, files):
+    try:
+        ensure_public_tree(files)
+    except PrivateDataError as error:
+        raise SyncError(str(error)) from error
     destination = safe_path(destination)
     if destination.exists() and not destination.is_dir():
         raise SyncError("Destination must be a directory.")
@@ -226,6 +257,7 @@ def main(argv=None):
     if destination == root or root in destination.parents or destination in root.parents:
         raise SyncError("The destination and Git checkout must be separate folders.")
     commit, files = snapshot(root)
+    validate_public_history(root, commit)
     previous, expected, writes, removals = preflight(destination, files)
     if args.mirror_only:
         unchanged_checkout(root, commit)

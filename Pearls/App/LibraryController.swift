@@ -51,13 +51,13 @@ private actor LibraryRepository {
         }
     }
 
-    func editNote(id: UUID, title: String, text: String) throws {
-        guard var item = try store.item(id: id), item.kind == .note else {
-            throw PearlStoreError.itemNotFound(id)
-        }
-        item.title = title
-        item.text = text
-        _ = try store.save(item)
+    /// A draft keeps the contents the editor opened. If sync changed or deleted
+    /// that note meanwhile, save the draft separately instead of overwriting it.
+    func editNote(id: UUID, title: String, text: String,
+                  originalTitle: String, originalText: String) throws -> Bool {
+        let saved = try store.saveNoteDraft(id: id, title: title, text: text,
+                                           originalTitle: originalTitle, originalText: originalText)
+        return saved.id != id
     }
 
     func favorite(id: UUID, value: Bool) throws { _ = try store.setFavorite(value, for: id) }
@@ -81,6 +81,11 @@ private actor LibraryRepository {
     }
 
     func exportArchive() throws -> Data { try store.exportArchive() }
+
+    /// The caller retains access to the chosen private sync folder throughout.
+    func synchronize(with directory: URL) throws -> PearlSyncResult {
+        try store.synchronize(with: directory)
+    }
 
     func importArchive(at url: URL) throws -> PearlImportResult {
         let scoped = url.startAccessingSecurityScopedResource()
@@ -144,6 +149,7 @@ final class LibraryController: ObservableObject {
     @Published var notice: String?
     @Published private(set) var lastDeletedID: UUID?
     @Published private(set) var isBusy = false
+    @Published private(set) var contentRevision = 0
 
     private var repository: LibraryRepository?
     private var openingTask: Task<LibraryRepository, Error>?
@@ -180,10 +186,15 @@ final class LibraryController: ObservableObject {
         try await reload()
     }
 
-    func updateNote(id: UUID, title: String, text: String) async throws {
+    func updateNote(id: UUID, title: String, text: String,
+                    originalTitle: String, originalText: String) async throws {
         guard let repository else { throw CocoaError(.fileReadUnknown) }
-        try await repository.editNote(id: id, title: title, text: text)
+        let keptCopy = try await repository.editNote(id: id, title: title, text: text,
+                                                   originalTitle: originalTitle, originalText: originalText)
         try await reload()
+        if keptCopy {
+            notice = "This note changed while you were editing. Your draft was saved as a separate pearl, keeping both versions."
+        }
     }
 
     func setFavorite(id: UUID, value: Bool) async throws {
@@ -252,6 +263,24 @@ final class LibraryController: ObservableObject {
         return try await repository.exportArchive()
     }
 
+    func synchronize(with folder: URL) async throws -> String {
+        guard isReady, let repository else { throw CocoaError(.fileReadUnknown) }
+        let result = try await repository.synchronize(with: folder)
+        try await reload()
+        startIndexing()
+        var summary = "Sent \(result.uploadedVersionCount) updates and received \(result.downloadedVersionCount)."
+        if result.conflictCopyCount > 0 {
+            summary += " Kept \(result.conflictCopyCount) conflicting versions as separate pearls."
+        }
+        if result.deferredFileCount > 0 {
+            summary += " Waiting for \(result.deferredFileCount) incomplete files."
+        }
+        if !result.issues.isEmpty {
+            summary += " \(result.issues.count) sync items need attention; their saved copies remain intact."
+        }
+        return summary
+    }
+
     func receiveSharedItems() async {
         guard isReady, let repository else { return }
         do {
@@ -277,8 +306,13 @@ final class LibraryController: ObservableObject {
                 originalFilename: item.originalFilename, createdAt: item.createdAt,
                 isFavorite: item.isFavorite, recognizedText: item.ocrText)
         }
-        items = snapshot.entries.map(display)
-        deletedItems = snapshot.deletedEntries.map(display)
+        let nextItems = snapshot.entries.map(display)
+        let nextDeletedItems = snapshot.deletedEntries.map(display)
+        if nextItems != items || nextDeletedItems != deletedItems {
+            items = nextItems
+            deletedItems = nextDeletedItems
+            contentRevision &+= 1
+        }
         if let message = snapshot.recoveryMessage, message != shownRecoveryMessage {
             shownRecoveryMessage = message
             notice = message

@@ -1,11 +1,11 @@
 # Pearls 0.1 — native acceptance checks
 
-The core suite (20 tests), Mac compilation, iOS Simulator compilation, Mac Release build/signature, installation, and initial Mac launch passed on November 8, 2026. The detailed runtime journeys below remain pending unless marked in [STATUS.md](STATUS.md). Compilation does not establish behavior on a physical iPhone.
+For released build 3, the core suite (20 tests), Mac compilation, iOS Simulator compilation, Mac Release build/signature, installation, and Mac appearance/font checks passed on November 8, 2026. Upcoming build 4 has passed 36 core tests with synthetic local sync folders plus Mac Debug and iOS Simulator compilation; Mac Release installation/runtime, signing/TestFlight, and the live private-sync checks below remain pending, as do other runtime journeys unless marked in [STATUS.md](STATUS.md). Compilation does not establish behavior on a physical iPhone.
 
 ## Build gate
 
 - Run `scripts/validate-apple.sh` on a Mac. All core tests, Mac compilation, and iOS Simulator compilation must pass.
-- Build/run both app schemes in Xcode. Confirm the bundled font resolves to PP Neue York and the icon catalog has no missing-slot errors.
+- Build/run both app schemes in Xcode. Confirm PP Neue Montreal resolves for interface/brand text, PP Neue York for headings/reading, all five bundled fonts register, and the icon catalog has no missing-slot errors.
 - Verify that the iPhone archive embeds `PearlsShare.appex` with matching team and App Group entitlements.
 
 ## Core user journeys
@@ -24,6 +24,17 @@ The core suite (20 tests), Mac compilation, iOS Simulator compilation, Mac Relea
 - Interrupt an extension session after one of multiple captures is committed. Retry or reopen Pearls; successful captures must appear once.
 - Share a file named `CAPTURE.JSON` to confirm the original cannot collide with inbox metadata.
 - Test a file-provider loading failure, a file larger than 25 MiB, and a missing App Group configuration. Preserve errors and staged data until deliberate cancellation; never show false success.
+
+## Private iCloud folder sync — pending build 4
+
+- Connect a dedicated private iCloud Drive Pearls folder through Settings on both Apple devices; verify that the same folder/collection is selected. No folder is connected yet.
+- Save a synthetic note and attachment on one device, leave both apps active, wait for provider completion, and verify exact content/original bytes on the other. Repeat in the reverse direction and after relaunch.
+- Edit while offline on both devices, reconnect, and verify preserved conflict copies/edits, deletions, restoration, favorites, and originals without silent loss.
+- Interrupt a provider download/upload and retry. An incomplete folder or a cloud conflict must not produce false success or erase the local library.
+- Disconnect and confirm that both local and cloud files remain. Reconnect to the same collection and confirm no duplicates. Do not delete cloud history as a reset.
+- Reject the project-source/Proton source folder, a shared-with-other-people folder, unrelated contents, and redirected paths; preserve existing files.
+- On Windows with the same personal iCloud account, finish downloading and inspect the synthetic JSON/originals without editing protocol files. Record file access separately from native Apple app testing; there is no Windows Pearls editor.
+- Verify saved content is absent from source commits, source mirrors, and release packages. Run the private-data, source-sync, and release-package guard suites with synthetic inputs.
 
 ## Presentation and accessibility
 

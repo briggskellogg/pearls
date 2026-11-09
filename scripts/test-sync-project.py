@@ -170,6 +170,55 @@ class SnapshotTests(unittest.TestCase):
         with self.assertRaisesRegex(sync.SyncError, "private configuration"):
             sync.snapshot(self.root)
 
+    def test_private_documents_fail_before_push_or_mirror(self):
+        candidates = {
+            "renamed.txt": json.dumps({"format": "com.pearls.library", "schemaVersion": 1, "items": []}).encode(),
+            "backup.txt": json.dumps({"format": "com.pearls.archive", "items": [], "attachments": []}).encode(),
+            "attachments/00000000-0000-0000-0000-000000000001/photo.png": b"synthetic image",
+        }
+        for name, data in candidates.items():
+            with self.subTest(name=name):
+                path = self.root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+                self.commit()
+                with tempfile.TemporaryDirectory(prefix="pearls-leak-destination-") as temporary:
+                    destination = Path(temporary).resolve() / "mirror"
+                    with (mock.patch.object(sync, "__file__", str(self.root / "scripts/sync-project.py")),
+                          mock.patch.object(sync, "remote_commit", side_effect=AssertionError("No network before guard")) as remote,
+                          mock.patch.object(sync, "mirror", side_effect=AssertionError("No copy before guard")) as mirror):
+                        with self.assertRaisesRegex(sync.SyncError, "Public publication blocked"):
+                            sync.main(["--push", "--destination", str(destination)])
+                        remote.assert_not_called()
+                        mirror.assert_not_called()
+                        self.assertFalse(destination.exists())
+                path.unlink()
+                self.commit()
+
+    def test_removed_private_file_still_blocks_publishing_git_history(self):
+        path = self.root / "accidental.json"
+        path.write_text(json.dumps({"format": "com.pearls.archive", "schemaVersion": 1, "items": []}))
+        self.commit()
+        path.unlink()
+        self.commit()
+        # HEAD itself is clean and contains no private file.
+        commit, files = sync.snapshot(self.root)
+        self.assertEqual(set(files), {"source.txt"})
+        with tempfile.TemporaryDirectory(prefix="pearls-history-guard-") as temporary:
+            with (mock.patch.object(sync, "__file__", str(self.root / "scripts/sync-project.py")),
+                  mock.patch.object(sync, "remote_commit", side_effect=AssertionError("No network before guard")) as remote,
+                  mock.patch.object(sync, "mirror", side_effect=AssertionError("No copy before guard"))):
+                with self.assertRaisesRegex(sync.SyncError, "reachable Git history"):
+                    sync.main(["--push", "--destination", str(Path(temporary).resolve())])
+                remote.assert_not_called()
+
+    def test_direct_mirror_preflight_rejects_private_snapshot(self):
+        with tempfile.TemporaryDirectory(prefix="pearls-direct-guard-") as temporary:
+            destination = Path(temporary).resolve() / "mirror"
+            with self.assertRaisesRegex(sync.SyncError, "Public publication blocked"):
+                sync.preflight(destination, {"safe-name.json": (b'{"format":"com.pearls.library"}', False)})
+            self.assertFalse(destination.exists())
+
     def test_mirror_only_uses_no_network_and_reports_local_status(self):
         original_git = sync.git
 

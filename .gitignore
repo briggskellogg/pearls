@@ -17,3 +17,23 @@ Pearls/Resources/Assets.xcassets/AppIcon-iOS.appiconset/
 Pearls/Resources/Assets.xcassets/AppIcon-Mac.appiconset/
 
 .pearls-release.local.json
+
+# Personal Pearls collections are never project source or public release assets.
+*.pearlsarchive
+*.pearls
+library.json
+library.previous.json
+library-damaged-*.json
+capture.json
+**/attachments/
+**/originals/
+pearls-sync.json
+**/SharedInbox/
+**/PearlsData/
+**/Pearls-Data/
+**/PearlsLibrary/
+**/Pearls-Library/
+**/PrivateData/
+**/PrivateLibrary/
+**/PersonalLibrary/
+**/DataBackups/
