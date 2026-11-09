@@ -58,6 +58,18 @@ class ReleasePackageTests(unittest.TestCase):
         self.git("-c", "user.name=Release Test", "-c", "user.email=test@example.invalid", "commit", "-qm", "new source")
         with self.assertRaises(release.ReleaseError):
             release.check_source(record, self.root)
+        # Packaging may consume an older completed build without relabeling it.
+        self.assertEqual(release.validate_recorded_source(record, self.root), record["source"])
+
+    def test_recorded_build_source_requires_existing_matching_commit_and_tree(self):
+        self.repository()
+        source = release.clean_source(self.root)
+        for field in ("commit", "tree"):
+            invalid = dict(source, **{field: "a" * 40})
+            with self.assertRaises(release.ReleaseError):
+                release.validate_recorded_source({"source": invalid}, self.root)
+        with self.assertRaises(release.ReleaseError):
+            release.validate_recorded_source({"source": dict(source, commit="--help")}, self.root)
 
     def test_archive_only_allows_products_symbols_and_metadata(self):
         archive = self.archive()
@@ -79,7 +91,7 @@ class ReleasePackageTests(unittest.TestCase):
             release.archive_files(archive)
 
     def test_ipa_rejects_traversal_unrelated_files_and_symlinks(self):
-        for index, name in enumerate(["../outside", "Payload/Pearls.app/../../outside", "secret.txt", "Payload/Pearls.app/signing.p8"]):
+        for index, name in enumerate(["../outside", "Payload/Pearls.app/../../outside", "secret.txt", "Payload/Pearls.app/signing.p8", "Symbols/not-a-uuid.symbols"]):
             ipa = self.root / (str(index) + ".ipa")
             with zipfile.ZipFile(ipa, "w") as zipped:
                 zipped.writestr(name, "data")
@@ -92,6 +104,18 @@ class ReleasePackageTests(unittest.TestCase):
             zipped.writestr(entry, "outside")
         with self.assertRaises(release.ReleaseError):
             release.inspect_ipa(ipa, self.root / "extract")
+
+    def test_ipa_symbols_must_match_product_uuids(self):
+        identifier = "FC650333-BE8B-389F-B972-D0342DC85778"
+        ipa = self.root / "symbols.ipa"
+        with zipfile.ZipFile(ipa, "w") as zipped:
+            zipped.writestr("Symbols/", "")
+            zipped.writestr("Symbols/" + identifier + ".symbols", "symbols")
+        extracted = self.root / "extract"
+        release.inspect_ipa(ipa, extracted)
+        release.validate_symbol_files(extracted / "Symbols", {identifier})
+        with self.assertRaises(release.ReleaseError):
+            release.validate_symbol_files(extracted / "Symbols", {"4FD4E09F-9C68-342D-B868-B4DC1BEE7001"})
 
     def test_archive_bytes_and_retained_zip_are_checksummed(self):
         archive = self.archive()

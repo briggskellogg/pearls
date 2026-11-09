@@ -23,6 +23,7 @@ REPOSITORY = "https://github.com/briggskellogg/pearls"
 PROVENANCE = "ReleaseSource.json"
 PRODUCTS = [("Pearls.app", "Pearls"), ("PearlsShare.appex", "PearlsShare")]
 PRIVATE_SUFFIXES = {".p8", ".p12", ".key", ".pem", ".keychain", ".keychain-db"}
+SYMBOL_NAME = re.compile(r"([A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12})\.symbols")
 
 
 class ReleaseError(Exception):
@@ -66,6 +67,17 @@ def clean_source(root=ROOT):
 
 def check_source(record, root=ROOT):
     require(record.get("source") == clean_source(root), "Source changed after build preparation began.")
+
+
+def validate_recorded_source(record, root=ROOT):
+    source = record.get("source", {})
+    require(source.get("repository") == REPOSITORY and source.get("clean") is True, "Invalid recorded build source.")
+    for field in ("commit", "tree"):
+        require(re.fullmatch(r"[a-f0-9]{40}", source.get(field, "")), "Invalid recorded source " + field)
+    commit = source["commit"]
+    require(command("git", "-C", str(root), "cat-file", "-t", commit) == "commit", "Recorded source is not a commit.")
+    require(command("git", "-C", str(root), "rev-parse", commit + "^{tree}") == source["tree"], "Recorded commit/tree do not match.")
+    return source
 
 
 def safe_relative(name):
@@ -113,7 +125,8 @@ def inspect_ipa(ipa, destination):
             require(entry.filename not in seen, "Duplicate IPA entry: " + entry.filename)
             seen.add(entry.filename)
             require(not stat.S_ISLNK(entry.external_attr >> 16), "IPA contains a symlink.")
-            require(entry.filename in ("Payload/", "Payload/Pearls.app/") or entry.filename.startswith("Payload/Pearls.app/"),
+            symbol = entry.filename.startswith("Symbols/") and SYMBOL_NAME.fullmatch(entry.filename.removeprefix("Symbols/"))
+            require(entry.filename in ("Payload/", "Payload/Pearls.app/", "Symbols/") or entry.filename.startswith("Payload/Pearls.app/") or symbol,
                     "Unrelated file in IPA: " + entry.filename)
         zipped.extractall(destination)
     return destination / "Payload/Pearls.app"
@@ -144,7 +157,21 @@ def match_symbols(archive, exported_app):
         symbol_values = uuids(archive / "dSYMs" / (product + ".dSYM") / "Contents/Resources/DWARF" / executable)
         require(archive_values == exported_values == symbol_values, "Archive, IPA, and dSYM UUIDs differ for " + product)
         result.append({"product": product, "uuids": [{"uuid": value, "architecture": arch} for value, arch in archive_values]})
+    symbol_directory = exported_app.parent.parent / "Symbols"
+    validate_symbol_files(symbol_directory, {value["uuid"] for product in result for value in product["uuids"]})
     return result
+
+
+def validate_symbol_files(directory, allowed_uuids):
+    if not directory.exists():
+        return
+    seen = set()
+    for path in regular_files(directory):
+        match = SYMBOL_NAME.fullmatch(path.name)
+        require(path.parent == directory and match, "Unexpected IPA Symbols entry: " + path.name)
+        value = match[1].upper()
+        require(value in allowed_uuids and value not in seen, "IPA symbol UUID does not match its products: " + value)
+        seen.add(value)
 
 
 def zip_files(output, root, files, prefix=""):
@@ -185,7 +212,8 @@ def package(args):
     require(not args.output.exists() and not args.output.is_symlink(), "Release package already exists; it was not replaced.")
     record = json.loads((args.archive / PROVENANCE).read_text())
     require(record.get("schema") == 1 and record.get("state") == "complete", "Archive has no completed build provenance.")
-    check_source(record)
+    validate_recorded_source(record)
+    packaging_source = clean_source()
     require(archive_files(args.archive) == record["archive_files"], "Archive changed after its source record was completed.")
     ipa = args.export / "Pearls.ipa"
     require(digest(ipa) == record["ipa_sha256"], "IPA changed after its source record was completed.")
@@ -207,7 +235,7 @@ def package(args):
         zip_files(retained / (stem + "-dSYMs.zip"), args.archive / "dSYMs", regular_files(args.archive / "dSYMs"))
         zip_files(retained / (stem + ".xcarchive.zip"), args.archive, regular_files(args.archive), prefix=stem + ".xcarchive/")
         artifacts = [{"file": path.name, "bytes": path.stat().st_size, "sha256": digest(path)} for path in sorted(retained.iterdir())]
-        manifest = {"schema": 1, "repository": REPOSITORY, "source": record["source"], "version": record["version"],
+        manifest = {"schema": 1, "repository": REPOSITORY, "source": record["source"], "packaging_source": packaging_source, "version": record["version"],
                     "build": record["build"], "bundle_id": info["CFBundleIdentifier"], "team_id": args.team_id,
                     "app_group": info["PearlsAppGroup"], "xcode": record["xcode"], "packaged_at": now(),
                     "binaries": symbols, "artifacts": artifacts,
@@ -216,7 +244,7 @@ def package(args):
         write_json(retained / "release-manifest.json", manifest)
         checksum_lines = [digest(path) + "  " + path.name for path in sorted(retained.iterdir())]
         (retained / "SHA256SUMS").write_text("\n".join(checksum_lines) + "\n")
-        check_source(record)
+        require(packaging_source == clean_source(), "Packaging source changed while retaining artifacts.")
         retained.rename(args.output)
     print("Release artifacts retained at " + str(args.output))
     print("Source commit: " + record["source"]["commit"] + "; no upload or Proton backup performed.")
