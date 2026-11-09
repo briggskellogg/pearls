@@ -26,6 +26,8 @@
 	<string>$(PEARLS_APP_GROUP)</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>PPNeueMontreal-Regular.ttf</string>
+		<string>PPNeueMontreal-Bold.ttf</string>
 		<string>PPNeueYork-NormalLight.otf</string>
 		<string>PPNeueYork-NormalMedium.otf</string>
 		<string>PPNeueYork-NormalExtrabold.otf</string>

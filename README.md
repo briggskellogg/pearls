@@ -2,13 +2,15 @@
 
 Pearls is a focused place for notes, links, images, and files. This project contains a shared SwiftUI app for **Mac and iPhone**, a local Foundation storage package, and an iPhone share extension.
 
-**Delivery status (November 8, 2026):** Pearls 0.1.0 build 2 adds a saved System/Light/Dark appearance setting. All 20 core tests and Mac/iOS Simulator builds pass. Build 2 is installed at `/Applications/Developer/Pearls.app`; Mac appearance switching and persistence across relaunch are verified. Apple processed the iPhone build, and build 2 is assigned to the existing Briggs internal TestFlight group for the already invited tester. Physical iPhone installation remains unverified. See [current release evidence](Release/STATUS.md).
+**Delivery status (November 8, 2026):** Build 3 is being prepared with PP Neue Montreal interface typography and PP Neue York headings and saved-note reading. The latest verified release is Pearls 0.1.0 build 2: all 20 core tests and Mac/iOS Simulator builds pass, the Mac app is installed at `/Applications/Developer/Pearls.app`, and Apple processed and assigned build 2 to the existing Briggs internal TestFlight group. Its System/Light/Dark setting and persistence across Mac relaunch are verified. Build 3 validation and delivery are pending; physical iPhone installation remains unverified. See [current release evidence](Release/STATUS.md).
 
 ## Project synchronization
 
 The canonical repository is [briggskellogg/pearls](https://github.com/briggskellogg/pearls). Completed work is committed, pushed, and mirrored to the user's Proton Drive `[projects]/pearls` folder using `python3 scripts/sync-project.py --push`; `--check` verifies the GitHub commit and mirrored source hashes. Configure the destination in the ignored `.pearls-sync.local.json` as `{"destination":"/absolute/path/to/[projects]/pearls"}`. Conflicting mirror edits stop the sync. The Proton client performs the subsequent cloud upload. See [project instructions](AGENTS.md).
 
 This workflow synchronizes project source. Each device's personal Pearls library still uses the local storage and archive-transfer behavior below.
+
+The adopted [release prompt](RELEASE_PROMPT.txt) and [destination map](project-destinations.json) retain the user's explicit public-repository and scoped Pearls-source-mirror permissions. They do not activate iCloud sync or broader backups. The user reports the PC setup is ready, but its archive and restore results are not accessible here. The [personal app system handoff](Release/PERSONAL-APP-SYSTEM.md) records the exact remaining work without treating it as configured.
 
 ## The first version
 
@@ -21,7 +23,7 @@ This workflow synchronizes project source. Each device's personal Pearls library
 - Choose System, Light, or Dark in Settings. The choice is saved on each device; System is the default and follows that device's current appearance.
 - Export and import a `.pearlsarchive` collection containing metadata and original files, including Recently Deleted. Imports are additive and refuse conflicting versions of an existing item.
 
-The presentation follows the supplied Bard references: PP Neue York typography, a pale neutral sidebar, a clean canvas, and generous space. Main destination icons remain filled and colored; selection adds a subdued neutral row and stronger label. Utility icons use neutral outlines. Favorites switch from an outline to a filled gold star. The supplied Pearls artwork is bundled unchanged and mechanically packaged into app icon sizes at build time.
+The presentation follows the supplied Bard references: PP Neue Montreal for interface controls and brand text, PP Neue York for headings and saved-note reading, a neutral sidebar, a clean canvas, and generous space. Five font files are bundled: Montreal Regular and Bold, plus Neue York Normal Light, Medium, and Extrabold. Main destination icons remain filled and colored; selection adds a subdued neutral row and stronger label. Utility icons use neutral outlines. Favorites switch from an outline to a filled gold star. The supplied Pearls artwork is bundled unchanged and mechanically packaged into app icon sizes at build time.
 
 ### Scope and limits
 

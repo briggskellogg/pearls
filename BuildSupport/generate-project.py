@@ -39,7 +39,8 @@ def encode(value, depth=0):
 app_sources = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Pearls").rglob("*.swift"))
 share_sources = ["Pearls/Platform/AppPaths.swift", "PearlsShare/ShareViewController.swift"]
 resources = ["Pearls/Resources/Assets.xcassets", "Pearls/Resources/PrivacyInfo.xcprivacy"]
-resources += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Pearls/Resources/Fonts").glob("*.otf"))
+resources += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Pearls/Resources/Fonts").iterdir()
+                    if p.is_file() and p.suffix.lower() in {".otf", ".ttf"})
 share_resources = ["PearlsShare/PrivacyInfo.xcprivacy"]
 configuration_files = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Configuration").iterdir() if p.is_file() and p.name != "Local.xcconfig")
 support_files = ["BuildSupport/prepare-assets.sh", "BuildSupport/PrepareIcons.swift", "BuildSupport/generate-project.py"]
@@ -54,7 +55,7 @@ def file_type(path):
     suffix = Path(path).suffix
     return {".swift": "sourcecode.swift", ".xcassets": "folder.assetcatalog", ".plist": "text.plist.xml",
             ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcconfig": "text.xcconfig",
-            ".otf": "file", ".py": "text.script.python", ".sh": "text.script.sh"}.get(suffix, "text")
+            ".otf": "file", ".ttf": "file", ".py": "text.script.python", ".sh": "text.script.sh"}.get(suffix, "text")
 
 
 for path in all_files:

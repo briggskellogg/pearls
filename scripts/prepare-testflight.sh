@@ -19,6 +19,12 @@ case "$EXPORT_PATH" in /*) ;; *) fail 'EXPORT_PATH must be absolute.' ;; esac
 [ ! -e "$EXPORT_PATH" ] && [ ! -L "$EXPORT_PATH" ] || fail "Export already exists; left untouched: $EXPORT_PATH"
 EXPECTED_IOS_BUNDLE_ID="${EXPECTED_IOS_BUNDLE_ID:-com.briggskellogg.pearls}"
 
+mkdir -p "$BUILD_ROOT"
+SOURCE_RECORD_DIR="$(mktemp -d "$BUILD_ROOT/release-source.XXXXXX")"
+trap 'rm -rf "$SOURCE_RECORD_DIR"' EXIT
+python3 "$SCRIPT_DIR/package-release.py" capture \
+  --output "$SOURCE_RECORD_DIR/source.json" --build-number "$BUILD_NUMBER"
+
 bash "$PEARLS_ROOT/BuildSupport/prepare-assets.sh"
 mkdir -p "$(dirname "$ARCHIVE_PATH")" "$(dirname "$EXPORT_PATH")"
 # Development provisioning needs a registered phone. Build the device product
@@ -112,4 +118,6 @@ xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH" -exportPath "$EXPORT_PATH
   -exportOptionsPlist "$EXPORT_OPTIONS" "${APPLE_AUTH_ARGS[@]}"
 TEAM_ID="$TEAM_ID" BUILD_NUMBER="$BUILD_NUMBER" EXPECTED_IOS_BUNDLE_ID="$EXPECTED_IOS_BUNDLE_ID" \
   bash "$SCRIPT_DIR/verify-testflight.sh" "$EXPORT_PATH"
+python3 "$SCRIPT_DIR/package-release.py" finish --record "$SOURCE_RECORD_DIR/source.json" \
+  --archive "$ARCHIVE_PATH" --export "$EXPORT_PATH"
 printf '\nTestFlight export verified locally: %s\nArchive to upload: %s\nNo upload or invitation was performed.\n' "$EXPORT_PATH" "$ARCHIVE_PATH"

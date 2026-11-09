@@ -2,6 +2,8 @@
 
 Reviewed on 2026-11-08 in a Linux workspace without Swift or Xcode. This is a source/configuration review, not evidence of compilation, signing, simulator execution, or upload validation.
 
+The resource finding below was updated on the Mac for the build 3 typography changes. Current native validation and delivered-build evidence are recorded separately in `STATUS.md`.
+
 ## Verified structure
 
 The generated OpenStep project was parsed independently, and all object references and shared-scheme blueprint references resolved. Configuration Info plists and entitlements parsed as XML property lists. The local package manifest declares Swift tools 5.9 and macOS 14 / iOS 17, matching the project’s deployment settings.
@@ -15,7 +17,7 @@ The generated OpenStep project was parsed independently, and all object referenc
 | Principal class | The extension Info plist names `$(PRODUCT_MODULE_NAME).ShareViewController`; its module is `PearlsShare`, matching the controller source. |
 | App Group | The iPhone app and extension both declare `$(PEARLS_APP_GROUP)` in entitlements and their Info values. The group holds only the shared capture inbox; the main library stays in the app’s own `Application Support/Pearls` directory. The group still requires registration and matching team profiles. |
 | Shared settings | Project-level `Shared.xcconfig` supplies version/build, bundle ID base, group, and automatic signing; the optional local config supplies the real developer team. |
-| Resources | Each app includes the asset catalog, three bundled fonts, and the privacy manifest. The extension includes the privacy manifest. |
+| Resources | Each app includes the asset catalog, five bundled fonts (PP Neue Montreal Regular/Bold and PP Neue York Normal Light/Medium/Extrabold), and the app privacy manifest. The extension includes its separate privacy manifest. Font registration and iOS `UIAppFonts` include both TTF and OTF resources. |
 | Icons | App targets choose `AppIcon-Mac` and `AppIcon-iOS`. The asset-packaging phase precedes their source/framework/resource phases. The Mac Info override that incorrectly named `AppIcon` has been removed. |
 | Archive type | Both platform Info plists advertise `.pearlsarchive` and the legacy `.pearls` alias; the app’s import routing recognizes both. |
 | Schemes | `Pearls-Mac` and `Pearls-iOS` identify the intended `Pearls.app` products and use Release for Archive. Package tests run through `scripts/validate-apple.sh`; the app schemes contain no separate UI-test target. |

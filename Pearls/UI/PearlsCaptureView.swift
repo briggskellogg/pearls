@@ -59,14 +59,14 @@ struct PearlsCaptureView: View {
                         ZStack(alignment: .topLeading) {
                             if text.isEmpty {
                                 Text("Write something, or paste a link…")
-                                    .font(PearlsTheme.body(17))
+                                    .font(PearlsTheme.reading(17))
                                     .foregroundStyle(.tertiary)
                                     .padding(.horizontal, 17)
                                     .padding(.top, 19)
                                     .allowsHitTesting(false)
                             }
                             TextEditor(text: $text)
-                                .font(PearlsTheme.body(17))
+                                .font(PearlsTheme.reading(17))
                                 .scrollContentBackground(.hidden)
                                 .padding(12)
                                 .frame(minHeight: 220)

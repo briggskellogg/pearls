@@ -86,7 +86,7 @@ struct PearlsItemCard: View {
                     .font(.system(size: 15))
                     .foregroundStyle(.secondary)
                 Text(item.text.isEmpty ? "An unfinished thought." : item.text)
-                    .font(PearlsTheme.body(16))
+                    .font(PearlsTheme.reading(16))
                     .foregroundStyle(.primary.opacity(0.85))
                     .multilineTextAlignment(.leading)
                     .lineLimit(6)

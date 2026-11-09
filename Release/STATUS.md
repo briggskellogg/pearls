@@ -1,6 +1,8 @@
 # Pearls release status
 
-Current source and Mac installation: **version 0.1.0 build 2**, verified November 8, 2026 on the user's Mac with Xcode 27.2 (27B52).
+Current source: **version 0.1.0 build 3 in preparation**, with PP Neue Montreal interface/brand typography and PP Neue York headings and saved-note reading. Build 3 must be committed, validated, packaged with its source revision, and delivered before it is described as released.
+
+Latest verified Mac installation and TestFlight release: **version 0.1.0 build 2**, verified November 8, 2026 on the user's Mac with Xcode 27.2 (27B52). The results below describe build 2 unless explicitly marked otherwise.
 
 Build 2 adds System/Light/Dark appearance in Settings. System is the default; the selected choice persists on that device. The main app's privacy manifest declares its app-only UserDefaults preference, while the share extension retains a separate manifest without that API declaration.
 
@@ -50,10 +52,22 @@ Logs and derived products are local and ignored by Git. No private signing mater
 
 ## Continuing the release
 
-1. Retain the uploaded build 2 archive, `build/ios/Pearls-TestFlight-build-2.xcarchive`; do not repeat its successful upload. The original build 1 unsigned archive's first export omitted App Groups and must not be uploaded.
+1. Commit the complete build 3 source before building. Validate, package the signed build/dSYMs/archive with a commit-and-checksum manifest, then deliver that exact revision. Retain the uploaded build 2 archive, `build/ios/Pearls-TestFlight-build-2.xcarchive`; do not repeat its successful upload. The original build 1 unsigned archive's first export omitted App Groups and must not be uploaded.
 2. App Store Connect record: [Pearls by Briggs Kellogg](https://appstoreconnect.apple.com/apps/6832381625/distribution), app ID `6832381625`.
 3. The already invited tester can install **Pearls by Briggs Kellogg**, version 0.1.0 build 2, through TestFlight. Record actual phone installation and runtime acceptance separately.
 4. Update this record, commit, and run `python3 scripts/sync-project.py --push` followed by `--check`.
+
+## Personal app system
+
+The reusable instructions are adopted in `RELEASE_PROMPT.txt`, with the user's explicit public-repository and scoped source-mirror exceptions. `project-destinations.json` records verified non-secret destinations; it is a status map, not an active backup or release scheduler.
+
+- GitHub and the local Proton `[projects]/pearls` source copy: retain the established tracked-source-only workflow and verify each completed commit. No personal app library or ignored local files are copied.
+- iCloud runtime sync and independent iPhone-to-iCloud exports: **NOT CONFIGURED**. Existing `.pearlsarchive` export/import is manual.
+- PC archive: **PENDING VERIFICATION**. The user reports setup is ready, but this chat has no verified endpoint, exact personal source/target paths, or restore-test result.
+- Proton personal-data/release archive: **NOT CONFIGURED HERE**; the existing local source mirror is separate, and its cloud upload has not been independently verified.
+- Hosted signing, TestFlight renewal, and backup schedules: **NOT CONFIGURED**. Existing hosted validation remains available.
+
+The remaining source/release artifact plan and hosted release prerequisites are in `PERSONAL-APP-SYSTEM.md`. No broad filesystem collection, new schedule, data migration, or backup pruning was enabled.
 
 ## Repository validation
 

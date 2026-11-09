@@ -65,11 +65,19 @@ enum PearlsTheme {
     }
 
     static func body(_ size: CGFloat = 16) -> Font {
-        custom("PPNeueYork-NormalLight", size: size, weight: .regular, relativeTo: .body)
+        custom("PPNeueMontreal-Regular", size: size, weight: .regular, relativeTo: .body)
     }
 
     static func medium(_ size: CGFloat = 16) -> Font {
-        custom("PPNeueYork-NormalMedium", size: size, weight: .medium, relativeTo: .body)
+        custom("PPNeueMontreal-Bold", size: size, weight: .semibold, relativeTo: .body)
+    }
+
+    static func brand(_ size: CGFloat) -> Font {
+        custom("PPNeueMontreal-Bold", size: size, weight: .bold, relativeTo: .title2)
+    }
+
+    static func reading(_ size: CGFloat = 19) -> Font {
+        custom("PPNeueYork-NormalLight", size: size, weight: .regular, relativeTo: .body)
     }
 
     static func heading(_ size: CGFloat = 32) -> Font {

@@ -8,6 +8,10 @@ Pearls is a native Mac/iPhone collection for notes, links, images, and files. Pr
 
 The user requires completed Pearls work to stay synchronized between this checkout, `https://github.com/briggskellogg/pearls`, and Proton Drive `[projects]/pearls`.
 
+Read `RELEASE_PROMPT.txt` and `project-destinations.json` for the adopted personal-app-system instructions and verified destination map. Preserve the explicit project exceptions: the existing repository remains public by prior user authorization, and the latest instruction authorizes this specific Git-tracked Pearls source mirror from the Mac to the established Proton folder. Do not change repository visibility, relocate the source mirror, or ask again about those already confirmed destinations.
+
+This exception covers only this project's committed source. It does not authorize a work-Mac backup, personal-library migration, signing-secret transfer, or collection of ignored/unrelated files. The PC setup is reported ready by the user, but its endpoint, exact personal source allowlist, archive paths, and restore results are unverified here. Broader backup execution remains disabled. See `Release/PERSONAL-APP-SYSTEM.md` for the pending PC/archive and hosted release work.
+
 1. At the start of work inspect `git status`, fetch `origin`, and reconcile remote changes with a fast-forward when possible. Never discard uncommitted work or force-push.
 2. Read the current `Release/STATUS.md`. Check the Proton mirror for external changes before replacing anything. Reconcile conflicts explicitly; preserve both versions where needed.
 3. Complete relevant tests, update release status when it changes, review the exact diff, and commit the finished work.
@@ -26,6 +30,8 @@ No recurring background task has been configured. These instructions apply whene
 - `python3 scripts/test-sync-project.py`: project-sync safety checks.
 - `bash scripts/install-mac.sh --developer`: guarded installation into `/Applications/Developer`; preserves an existing app as a backup and leaves library data alone. This is the user's requested Mac destination.
 - `Release/README.md` and `Release/DEVICE-CHECKS.md`: signing, archive, upload, and runtime checks.
+
+Use the public Apple app naming convention `[app name] by Briggs Kellogg`; the existing record is `Pearls by Briggs Kellogg`. Preserve its team, bundle IDs, App Store Connect app ID, and existing tester group. Commit the intended source before producing the next native release, record its exact Git SHA in the release artifact manifest, and do not re-upload an already delivered build for documentation-only changes.
 
 Xcode needs normal macOS cache, compiler-plugin, and file-coordination service access. If a restrictive execution sandbox blocks those services, request the supported execution escalation rather than removing file coordination or SwiftUI state from the code.
 

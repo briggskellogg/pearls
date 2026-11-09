@@ -120,6 +120,18 @@
 			"path" = "Pearls/Resources/Assets.xcassets";
 			"sourceTree" = "SOURCE_ROOT";
 		};
+		"2E698888D9BDFEE17822A867" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "file";
+			"path" = "Pearls/Resources/Fonts/PPNeueMontreal-Bold.ttf";
+			"sourceTree" = "SOURCE_ROOT";
+		};
+		"8997192A2A26170B38989C7B" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "file";
+			"path" = "Pearls/Resources/Fonts/PPNeueMontreal-Regular.ttf";
+			"sourceTree" = "SOURCE_ROOT";
+		};
 		"B3D5A8BF33CF95CA6A68DCBB" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "file";
@@ -222,6 +234,8 @@
 				"03991A6A13088F1C388CA049",
 				"FEBFC7B760E7C5278BDB906B",
 				"74079F99661A1A1647046EB8",
+				"2E698888D9BDFEE17822A867",
+				"8997192A2A26170B38989C7B",
 				"B3D5A8BF33CF95CA6A68DCBB",
 				"F3685B00C0C12CF272681B65",
 				"66E457CC0A91E974EBDFE201",
@@ -603,6 +617,14 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "C9A7575CB334F25D4AF1A999";
 		};
+		"8FDA092750A2B8D38143C775" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "2E698888D9BDFEE17822A867";
+		};
+		"5BF4CF1385C95AECB049B101" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "8997192A2A26170B38989C7B";
+		};
 		"A1014724E457512A28359D37" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "B3D5A8BF33CF95CA6A68DCBB";
@@ -621,6 +643,8 @@
 			"files" = (
 				"95B92608FF70060A98E16465",
 				"9B7BE6491C7AAA9B9FD473B3",
+				"8FDA092750A2B8D38143C775",
+				"5BF4CF1385C95AECB049B101",
 				"A1014724E457512A28359D37",
 				"5FFC5B0F77C8B02BA2E2B400",
 				"3ACA7DD5E4C4580225293BCE",
@@ -839,6 +863,14 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "C9A7575CB334F25D4AF1A999";
 		};
+		"01594D8FFC1D458CDA16478E" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "2E698888D9BDFEE17822A867";
+		};
+		"44FE4ADA0AD1ECC043F925A5" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "8997192A2A26170B38989C7B";
+		};
 		"A2DCD70678274B30997F3AA5" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "B3D5A8BF33CF95CA6A68DCBB";
@@ -857,6 +889,8 @@
 			"files" = (
 				"6EBF6BE85A9F3607D21546F0",
 				"BD82FA912C80E6BD9C75BEEA",
+				"01594D8FFC1D458CDA16478E",
+				"44FE4ADA0AD1ECC043F925A5",
 				"A2DCD70678274B30997F3AA5",
 				"944FE8513DD7B73D7E502338",
 				"D9B929000E0EF968C20A0AC0",

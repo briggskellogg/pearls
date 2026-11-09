@@ -25,8 +25,9 @@ onImportFiles is called only after capture is dismissed.
 onExportArchive/onImportArchive are called only after settings is dismissed.
 The root can attach .fileImporter/.fileExporter to the wrapper view.
 
-Theme custom fonts try PPNeueYork-NormalLight, PPNeueYork-NormalMedium,
-and PPNeueYork-NormalExtrabold with a system fallback. Font assets and registration are root-owned.
+Interface and brand text use PPNeueMontreal-Regular/Bold. Saved-note reading and
+editing use PPNeueYork-NormalLight; display headings use PPNeueYork-NormalExtrabold.
+All faces have system fallbacks and are bundled and registered by the app.
 Settings clearly labels 'On this device' and offers backup export/import.
 
 UI completion notes:
@@ -36,4 +37,4 @@ UI completion notes:
 - Font names use verified exact PostScript names.
 - Capture and note-editor failures preserve drafts, and unsaved text needs deliberate discard.
 - iPhone accessibility text sizes switch top destination buttons to a vertical layout; all utility targets have at least 44-point hit areas.
-- No compilation/Simulator validation possible in this Linux workspace. Source review only.
+- Current native build and runtime verification is recorded in Release/STATUS.md.

@@ -113,7 +113,7 @@ struct PearlsDetailView: View {
         case .note:
             VStack(alignment: .leading, spacing: 24) {
                 Text(item.text)
-                    .font(PearlsTheme.body(19))
+                    .font(PearlsTheme.reading(19))
                     .lineSpacing(7)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
@@ -149,7 +149,7 @@ struct PearlsDetailView: View {
                 }
                 if !item.text.isEmpty, item.text != item.sourceURL?.absoluteString {
                     Text(item.text)
-                        .font(PearlsTheme.body(18))
+                        .font(PearlsTheme.reading(18))
                         .lineSpacing(6)
                         .textSelection(.enabled)
                 }
@@ -286,7 +286,7 @@ private struct PearlsNoteEditorView: View {
                     .padding(.top, 12)
                     .accessibilityLabel("Note title")
                 TextEditor(text: $text)
-                    .font(PearlsTheme.body(18))
+                    .font(PearlsTheme.reading(18))
                     .scrollContentBackground(.hidden)
                     .frame(minHeight: 260)
                     .accessibilityLabel("Note text")

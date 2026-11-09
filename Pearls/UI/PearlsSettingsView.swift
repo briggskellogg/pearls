@@ -21,7 +21,7 @@ struct PearlsSettingsView: View {
                         PearlsBrandMark(size: 42)
                         VStack(alignment: .leading, spacing: 4) {
                             Text("pearls")
-                                .font(PearlsTheme.heading(28))
+                                .font(PearlsTheme.brand(28))
                             Text("Version \(version)")
                                 .font(PearlsTheme.body(13))
                                 .foregroundStyle(.secondary)
@@ -38,6 +38,7 @@ struct PearlsSettingsView: View {
                             }
                         }
                         .pickerStyle(.segmented)
+                        .labelsHidden()
                         Text("System follows your device’s light or dark appearance.")
                             .font(PearlsTheme.body(13))
                             .foregroundStyle(.secondary)

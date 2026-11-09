@@ -29,5 +29,16 @@
     "build_id": "5395a00e-1e51-4f17-a464-496c88182009",
     "testflight_url": "https://appstoreconnect.apple.com/teams/69a6de92-aaed-47e3-e053-5b8c7c11a4d1/apps/6832381625/testflight/ios/5395a00e-1e51-4f17-a464-496c88182009"
   },
-  "github_visibility": "public"
+  "github_visibility": "public",
+  "release_in_preparation": {
+    "version": "0.1.0",
+    "build": 3,
+    "status": "preparing; commit source before native validation and packaging",
+    "changes": [
+      "PP Neue Montreal interface and brand typography",
+      "PP Neue York headings and saved-note reading"
+    ],
+    "source_revision": null,
+    "upload_verified": false
+  }
 }

@@ -186,7 +186,7 @@ struct PearlsLibraryView: View {
             ToolbarItem(placement: .principal) {
                 HStack(spacing: 7) {
                     PearlsBrandMark(size: 25)
-                    Text("pearls").font(PearlsTheme.medium(22))
+                    Text("pearls").font(PearlsTheme.brand(22))
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Pearls")
@@ -295,7 +295,7 @@ struct PearlsLibraryView: View {
         VStack(alignment: .leading, spacing: 24) {
             HStack(spacing: 11) {
                 PearlsBrandMark(size: 36)
-                Text("pearls").font(PearlsTheme.heading(29))
+                Text("pearls").font(PearlsTheme.brand(29))
             }
             .padding(.horizontal, 18)
             .padding(.top, 30)

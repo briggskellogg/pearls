@@ -1,0 +1,184 @@
+{
+  "schema_version": 2,
+  "configuration_status": "partially_verified_project_specific_exceptions",
+  "backup_scope": {
+    "backup_enabled": false,
+    "mode": "explicit_personal_source_allowlist_only",
+    "approved_personal_icloud_source_roots": [],
+    "approved_personal_pc_source_roots": [],
+    "approved_personal_repository_ids": [],
+    "verified_personal_apple_account": null,
+    "verified_personal_proton_account": null,
+    "verified_pc_host": null,
+    "scope_approved_at": null,
+    "work_mac_collection_allowed": false,
+    "whole_drive_or_profile_collection_allowed": false,
+    "work_data_allowed": false,
+    "mixed_content_folders_allowed": false,
+    "reject_symlinks_and_junctions": true,
+    "unknown_reparse_point_policy": "block",
+    "cloud_placeholder_policy": "verified_provider_and_complete_hydration_required",
+    "validate_resolved_paths_at_runtime": true,
+    "denials_override_allowances": true,
+    "source_archive_overlap_allowed": false,
+    "scope_change_requires_user_confirmation": true
+  },
+  "project": {
+    "name": "Pearls",
+    "slug": "pearls",
+    "public_app_name": "Pearls by Briggs Kellogg",
+    "naming_convention": "[app name] by Briggs Kellogg",
+    "source_revision_verified": "86f488d4f9fc01222462f93a8dfa25d549f692f1",
+    "source_revision_note": "Last verified synced commit before this configuration update; use the current Git and Proton receipt for subsequent commits."
+  },
+  "github": {
+    "repository": "briggskellogg/pearls",
+    "repository_id": 1450745119,
+    "url": "https://github.com/briggskellogg/pearls",
+    "release_branch": "main",
+    "actual_visibility": "public",
+    "required_visibility": "public",
+    "visibility_decision": "Existing project-specific public publishing permission; generic private default does not override it.",
+    "validation_workflow": ".github/workflows/apple-validation.yml",
+    "validation_runner": "macos-latest",
+    "release_workflow": null,
+    "macos_runner": null,
+    "release_artifact_staging": null,
+    "artifact_retention_days": null
+  },
+  "apple": {
+    "team_id": "24KAG7M42P",
+    "targets": [
+      {
+        "platform": "iOS",
+        "scheme": "Pearls-iOS",
+        "bundle_id": "com.briggskellogg.pearls",
+        "app_store_connect_app_id": "6832381625",
+        "app_store_connect_name": "Pearls by Briggs Kellogg",
+        "testflight_group_ids": [
+          "53c9d19e-50ee-4ba6-8550-cf56d5e56438"
+        ],
+        "testflight_group_name": "Briggs",
+        "testflight_group_type": "internal",
+        "app_group_id": "group.com.briggskellogg.pearls",
+        "icloud_container_ids": null,
+        "embedded_extension_bundle_id": "com.briggskellogg.pearls.share"
+      },
+      {
+        "platform": "macOS",
+        "scheme": "Pearls-Mac",
+        "bundle_id": "com.briggskellogg.pearls",
+        "app_store_connect_app_id": null,
+        "testflight_group_ids": [],
+        "icloud_container_ids": null,
+        "distribution": "local ad-hoc signed app",
+        "install_path": "/Applications/Developer/Pearls.app"
+      }
+    ],
+    "credential_store_references": [
+      "existing local Xcode account; not configured as hosted CI credentials"
+    ],
+    "hosted_signing_credential_store_reference": null,
+    "latest_verified_release": {
+      "version": "0.1.0",
+      "build": 2,
+      "testflight_build_id": "5395a00e-1e51-4f17-a464-496c88182009",
+      "state": "processed_and_assigned_to_existing_internal_group",
+      "physical_iphone_installation_verified": false,
+      "receipt_path": "Release/release-target.json",
+      "expiration_from_apple": null
+    },
+    "release_in_preparation": {
+      "version": "0.1.0",
+      "build": 3,
+      "status": "source_changes_preparing_clean_commit_before_native_build",
+      "changes": [
+        "PP Neue Montreal interface and brand typography",
+        "PP Neue York headings and saved-note reading"
+      ],
+      "source_revision": null,
+      "archive": null,
+      "upload_verified": false
+    }
+  },
+  "icloud": {
+    "sync_implementation": null,
+    "production_schema_verified": false,
+    "exports_relative_path": null,
+    "iphone_export_without_mac_verified": false
+  },
+  "windows_pc": {
+    "os": "Windows 11 Pro",
+    "normally_online": true,
+    "host": null,
+    "icloud_download_source": null,
+    "data_archive_root": null,
+    "source_archive_root": null,
+    "release_archive_root": null,
+    "task_names": [],
+    "user_report": "User reports PC setup is fine; no verified endpoint or archive/restore evidence available in this chat."
+  },
+  "proton": {
+    "tool": "official_proton_drive_cli",
+    "credential_store_reference": null,
+    "data_backup_remote_root": null,
+    "source_backup_remote_root": null,
+    "release_archive_remote_root": null,
+    "source_mirror_reference": "source_mirror; established local project copy is distinct from an official-CLI PC backup"
+  },
+  "schedules": {
+    "status": "proposed_not_active",
+    "timezone": "America/Phoenix",
+    "local_snapshots": "hourly",
+    "proton_uploads": "nightly",
+    "proton_upload_local_time": null,
+    "testflight_expiration_check": "daily",
+    "renewal_target_build_age_days": 60,
+    "renewal_source": "last_successfully_released_revision",
+    "retention_policy": null,
+    "pruning_enabled": false,
+    "authorized_notification_channel": null
+  },
+  "verification": {
+    "icloud_sync": "not_configured",
+    "pc_restore_without_work_mac": "not_verified",
+    "proton_restore_without_work_mac": "not_verified",
+    "last_receipt_path": "Release/STATUS.md",
+    "github": "verified_at_source_revision_verified",
+    "testflight": "build_2_processed_and_assigned_physical_install_unverified",
+    "pc_archive": "unverified_no_accessible_endpoint",
+    "proton_personal_data_backup": "not_configured",
+    "proton_project_source_copy": "verified_local_receipt_only_remote_upload_unverified"
+  },
+  "source_mirror": {
+    "enabled": true,
+    "scope": "only committed Git-tracked Pearls source from the verified repository",
+    "source_root": "verified Git checkout root",
+    "destination_provider": "Proton Drive local macOS File Provider folder",
+    "destination_config_reference": ".pearls-sync.local.json:destination",
+    "destination_relative_path": "[projects]/pearls",
+    "destination_folder_verified": true,
+    "authorization": "Latest explicit user instruction on 2026-11-08 to use Proton Drive, projects, the related Pearls folder, and GitHub.",
+    "work_mac_exception": "This project source mirror only; no broad work-Mac filesystem or app-library collection.",
+    "excludes": [
+      ".git",
+      "ignored local files",
+      "build products",
+      "signing material",
+      "personal app libraries",
+      "unrelated data"
+    ],
+    "command": "python3 scripts/sync-project.py --push",
+    "verification_command": "python3 scripts/sync-project.py --check",
+    "receipt_filename": ".pearls-project-sync.json",
+    "last_verified_commit": "86f488d4f9fc01222462f93a8dfa25d549f692f1",
+    "last_verified_file_count": 76,
+    "proton_remote_upload_verified": false
+  },
+  "configuration_consumers": {
+    "status": "destination map and instructions only; no new scheduler or backup process activated",
+    "source_sync": "scripts/sync-project.py uses .pearls-sync.local.json, Git origin/main, and its SHA-256 receipts",
+    "release_scripts": "scripts/common.sh and release scripts use documented environment variables and existing Apple signing access",
+    "pc_backup_and_hosted_release": null
+  }
+}
