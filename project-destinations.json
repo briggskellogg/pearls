@@ -28,8 +28,8 @@
     "slug": "pearls",
     "public_app_name": "Pearls by Briggs Kellogg",
     "naming_convention": "[app name] by Briggs Kellogg",
-    "source_revision_verified": "0238e69f33454c90bf13f0677e68c52d923f4a50",
-    "source_revision_note": "Verified build 4 app/package source and 91-file Proton snapshot; later documentation receipts require their own sync check."
+    "source_revision_verified": "e87c5052ec94fda8d5172978e221fbb58f0d0ff7",
+    "source_revision_note": "Verified app/package source and recorded source-mirror snapshot; later documentation commits require their own receipt."
   },
   "github": {
     "repository": "briggskellogg/pearls",
@@ -43,10 +43,10 @@
     "validation_runner": "macos-latest",
     "release_workflow": null,
     "macos_runner": null,
-    "release_artifact_staging": "build/releases/Pearls-0.1.0-build-4",
+    "release_artifact_staging": "build/releases/Pearls-0.1.0-build-6",
     "artifact_retention_days": null,
-    "release_artifact_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.4",
-    "prerelease_tag": "v0.1.0-build.4",
+    "release_artifact_url": "https://github.com/briggskellogg/pearls/releases/tag/v0.1.0-build.6",
+    "prerelease_tag": "v0.1.0-build.6",
     "release_artifact_server_digests_verified": true
   },
   "apple": {
@@ -84,21 +84,21 @@
     "hosted_signing_credential_store_reference": null,
     "latest_verified_release": {
       "version": "0.1.0",
-      "build": 4,
-      "testflight_build_id": "30b33a85-ecad-4f78-98d2-3e8ee1f14023",
+      "build": 6,
+      "testflight_build_id": "e9c3d3c8-b16b-496d-864c-b340996a9df9",
       "state": "processed_and_assigned_to_existing_internal_group",
       "physical_iphone_installation_verified": false,
       "receipt_path": "Release/release-target.json",
       "expiration_from_apple": null,
-      "source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
+      "source_revision": "e87c5052ec94fda8d5172978e221fbb58f0d0ff7",
       "what_to_test_saved": true
     },
     "latest_verified_mac_release": {
       "version": "0.1.0",
-      "build": 4,
-      "source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
+      "build": 6,
+      "source_revision": "e87c5052ec94fda8d5172978e221fbb58f0d0ff7",
       "install_path": "/Applications/Developer/Pearls.app",
-      "appearance_qa": "settings_version_and_persisted_system_verified"
+      "appearance_qa": "Mac Release build 6 installed at /Applications/Developer/Pearls.app; reopened Settings confirms 0.1.0 (6), persisted System appearance, and retained private-folder connection controls"
     },
     "previous_verified_releases": [
       {
@@ -110,35 +110,54 @@
         "receipt_path": "Release/release-target.json",
         "expiration_from_apple": null,
         "source_revision": "2f31ec48b07b24c5343a163e5f5cd4022c686d3a"
+      },
+      {
+        "version": "0.1.0",
+        "build": 4,
+        "testflight_build_id": "30b33a85-ecad-4f78-98d2-3e8ee1f14023",
+        "state": "processed_and_assigned_to_existing_internal_group",
+        "physical_iphone_installation_verified": false,
+        "receipt_path": "Release/release-target.json",
+        "expiration_from_apple": null,
+        "source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
+        "what_to_test_saved": true
       }
     ],
     "release_verification": {
       "version": "0.1.0",
-      "build": 4,
+      "build": 6,
+      "source_revision": "e87c5052ec94fda8d5172978e221fbb58f0d0ff7",
       "status": "processed_and_assigned_to_existing_internal_group",
-      "source_revision": "0238e69f33454c90bf13f0677e68c52d923f4a50",
       "upload_verified": true,
-      "changes": [
-        "Optional user-selected private iCloud Drive content sync",
-        "Offline local library retained",
-        "Windows JSON/original file access without native editor",
-        "Private-data publication guards"
-      ],
-      "private_folder_connected": true,
-      "cross_device_sync_verified": false,
+      "upload_time": "2026-11-08T22:01:40.085-07:00",
+      "testflight_build_id": "e9c3d3c8-b16b-496d-864c-b340996a9df9",
       "validation": {
         "core_tests_passed": 36,
-        "synthetic_sync_fixtures_only": true,
-        "independent_core_review_findings_resolved": 3,
-        "final_native_validation": "36_core_tests_mac_debug_and_ios_simulator_compilation_passed",
-        "live_cross_device_sync": "unverified_mac_connected_empty_marker_provider_upload_verified",
-        "native_validation_log": "build/logs/build4-validation-final.log",
-        "mac_release_installation_runtime": "installed_signature_settings_version_and_persisted_system_verified; private_folder_connected_empty_marker_uploaded",
-        "signing_testflight_delivery": "archive_export_signatures_profiles_verified_upload_processed_existing_briggs_internal_group_assigned"
+        "python_tests_passed": 40,
+        "native": "Final build 6 Mac Release build, Mac/iOS typechecks and iOS Simulator compilation passed",
+        "icons": "All 28 icon slots and transparency/opacity checks passed during build 5; the same icon pipeline/assets are retained in build 6",
+        "phone_simulator": "Intrinsic header sizing correction visually confirmed on iPhone simulator",
+        "archive_export": "Build 6 archive/export and app/share-extension signatures/profiles verified from clean source e87c5052ec94fda8d5172978e221fbb58f0d0ff7",
+        "prior_unchanged_core_and_python": "Initial 36 core and 40 Python checks preceded final-source CI; final e87c505 CI repeated and passed these checks.",
+        "installer": "Ignores Simulator processes; verified refusal when the native Mac app is running",
+        "final_ci": "Exact e87c505 source CI 42564687485 passed 36 core tests, 40 Python tests, and Mac/iOS validation"
       },
-      "upload_time": "2026-11-08T21:31:11.491-07:00",
-      "testflight_build_id": "30b33a85-ecad-4f78-98d2-3e8ee1f14023"
-    }
+      "mac_runtime": "Mac Release build 6 installed at /Applications/Developer/Pearls.app; reopened Settings confirms 0.1.0 (6), persisted System appearance, and retained private-folder connection controls",
+      "cross_device_sync_verified": false
+    },
+    "withheld_releases": [
+      {
+        "version": "0.1.0",
+        "build": 5,
+        "uploaded_at": "2026-11-08T21:54:33.660-07:00",
+        "status": "processed_withheld_from_Briggs",
+        "apple_build_id": "68395c57-e249-4efc-ad77-492087e032a2",
+        "reason": "Simulator QA found compressed phone-header text; corrected in build 6.",
+        "validation": "36 core + 40 Python; native Mac/iOS compilation; 28 icon slots/alpha/opacity; Mac Light/Dark passed and System restored",
+        "testflight_group_assigned": false,
+        "invitations_sent": 0
+      }
+    ]
   },
   "icloud": {
     "sync_implementation": "build_4_user_selected_private_icloud_drive_folder",
@@ -227,12 +246,12 @@
     "proton_restore_without_work_mac": "not_verified",
     "last_receipt_path": "Release/STATUS.md",
     "github": "verified_at_source_revision_verified",
-    "testflight": "build_4_processed_and_assigned_to_existing_Briggs_internal_group_1_tester; testing_notes_saved; physical_install_unverified",
+    "testflight": "build_6_processed_and_assigned_to_existing_internal_group; physical_install_unverified",
     "pc_archive": "unverified_no_accessible_endpoint",
     "proton_personal_data_backup": "not_configured",
-    "proton_project_source_copy": "native_client_upload_completion_verified_for_recorded_snapshot; remote_restore_unverified",
+    "proton_project_source_copy": "native_client_upload_verified_for_recorded_e87c505_snapshot; final_documentation_checked_by_sync_receipt; remote_restore_unverified",
     "public_data_boundary": "private_data_guard_10_source_sync_19_release_package_11_synthetic_tests_passed",
-    "ci": "42561984530_completed_success_for_0238e69f33454c90bf13f0677e68c52d923f4a50"
+    "ci": "completed_success; source e87c5052ec94fda8d5172978e221fbb58f0d0ff7"
   },
   "source_mirror": {
     "enabled": true,
@@ -255,10 +274,10 @@
     "command": "python3 scripts/sync-project.py --push",
     "verification_command": "python3 scripts/sync-project.py --check",
     "receipt_filename": ".pearls-project-sync.json",
-    "last_verified_commit": "0238e69f33454c90bf13f0677e68c52d923f4a50",
-    "last_verified_file_count": 91,
+    "last_verified_commit": "e87c5052ec94fda8d5172978e221fbb58f0d0ff7",
+    "last_verified_file_count": 97,
     "proton_remote_upload_verified": true,
-    "proton_upload_verification_method": "Native Proton Drive client finished Uploaded/Modified completion entries for receipt, privacy guard, Settings, LibraryView and source files",
+    "proton_upload_verification_method": "Exact e87c505 source snapshot check passed for 97 files. Native Proton client showed finished upload entries for the source receipt, install-mac.sh, PearlsTheme.swift, provenance, and branding assets. This records that source snapshot; subsequent documentation receipts are verified by the final sync check.",
     "proton_remote_download_restore_verified": false,
     "private_data_guard": "scripts/private_data_guard.py validates source snapshot/reachable history and release inputs; private collections are excluded"
   },

@@ -1,6 +1,6 @@
 # Pearls 0.1 — native acceptance checks
 
-For released build 3, the core suite (20 tests), Mac compilation, iOS Simulator compilation, Mac Release build/signature, installation, and Mac appearance/font checks passed on November 8, 2026. Build 4 passed 36 core tests with synthetic local sync folders, 40 publication-safety tests, Mac Debug/Release and iOS Simulator compilation, signed archive/export verification, and Mac installation. Settings confirms build 4 and the persisted System choice. TestFlight build 4 processing and Briggs Internal assignment are verified; physical iPhone installation and the live private-sync checks below remain pending, as do other runtime journeys unless marked in [STATUS.md](STATUS.md). Compilation does not establish behavior on a physical iPhone.
+Build 6: core 36 passed; Python 40 passed; native compilation Final build 6 Mac Release build, Mac/iOS typechecks and iOS Simulator compilation passed. Mac runtime: Mac Release build 6 installed at /Applications/Developer/Pearls.app; reopened Settings confirms 0.1.0 (6), persisted System appearance, and retained private-folder connection controls. Phone simulator: Intrinsic header sizing correction visually confirmed on iPhone simulator. TestFlight: processed and assigned to Briggs Internal (one tester). Physical iPhone installation and saved-content cross-device transfer remain unverified. Earlier build 4 evidence is retained in [STATUS.md](STATUS.md) and `release-target.json`.
 
 ## Build gate
 

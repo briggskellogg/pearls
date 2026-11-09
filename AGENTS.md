@@ -6,6 +6,8 @@ Pearls is a native Mac/iPhone collection for notes, links, images, and files. Pr
 
 Saved notes, links, images, PDFs, originals, library metadata, private sync versions, and collection exports must never enter the public GitHub repository, a GitHub release, or the Proton project-source mirror. Windows has file access through iCloud for Windows, not a native Pearls editor. Follow `Release/PRIVATE-SYNC-SETUP.md`; do not choose a private sync folder on the user's behalf or point it at this source repository/Proton project folder.
 
+Keep the user's separated branding: the Pearls symbol has no embedded writing, and the name is live PP Neue Montreal text beside it in a top corner. Reuse the approved gold maker mark near a bottom corner. The Mac app icon has a transparent background with the gold maker at lower right; the iOS default raster retains the platform-required opaque background. Preserve the original master and maker asset provenance in `BuildSupport/Brand/provenance.txt`. Verify the phone header visually when changing toolbar sizing.
+
 ## Required synchronization
 
 The user requires completed Pearls work to stay synchronized between this checkout, `https://github.com/briggskellogg/pearls`, and Proton Drive `[projects]/pearls`.
