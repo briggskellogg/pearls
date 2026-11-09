@@ -14,9 +14,15 @@ case "${1:---developer}" in
 esac
 [ "$#" -le 1 ] || fail 'Only one install destination option is accepted.'
 require_macos_xcode
-if /usr/bin/pgrep -x Pearls >/dev/null 2>&1; then
-  fail 'Pearls is running. Quit the app before installing a new build; no process was stopped.'
-fi
+# An iPhone Simulator process has the same executable name, but cannot hold
+# the Mac app open. Keep the guard scoped to native Mac app bundles.
+while IFS= read -r PEARLS_PID; do
+  PEARLS_EXECUTABLE="$(/bin/ps -p "$PEARLS_PID" -o comm= 2>/dev/null || true)"
+  case "$PEARLS_EXECUTABLE" in
+    */Pearls.app/Contents/MacOS/Pearls)
+      fail 'Pearls is running. Quit the Mac app before installing a new build; no process was stopped.' ;;
+  esac
+done < <(/usr/bin/pgrep -x Pearls || true)
 mkdir -p "$INSTALL_DIR" || fail "Could not create $INSTALL_DIR."
 [ -w "$INSTALL_DIR" ] || fail "$INSTALL_DIR is not writable. Use --user or arrange access to the system Applications folder."
 
