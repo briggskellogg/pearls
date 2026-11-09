@@ -2,7 +2,7 @@
 
 Pearls is a focused place for notes, links, images, and files. This project contains a shared SwiftUI app for **Mac and iPhone**, a local Foundation storage package, and an iPhone share extension.
 
-**Delivery status (November 8, 2026):** 20 core tests pass; Mac and iOS Simulator builds pass. Pearls 0.1.0 (1) is installed and launches at `/Applications/Developer/Pearls.app` on the user's Mac. The user selected TestFlight for iPhone delivery; distribution signing and App Store Connect delivery remain in progress. See [current release evidence](Release/STATUS.md).
+**Delivery status (November 8, 2026):** 20 core tests pass; Mac and iOS Simulator builds pass. Pearls 0.1.0 (1) is installed and launches at `/Applications/Developer/Pearls.app` on the user's Mac. The iPhone build is processed and available through TestFlight as “Pearls by Briggs Kellogg”; the confirmed internal tester is invited to version 0.1.0 build 1. Physical iPhone installation remains for the tester to confirm. See [current release evidence](Release/STATUS.md).
 
 ## Project synchronization
 

@@ -15,3 +15,5 @@ Configuration/Local.xcconfig
 *.xcarchive/
 Pearls/Resources/Assets.xcassets/AppIcon-iOS.appiconset/
 Pearls/Resources/Assets.xcassets/AppIcon-Mac.appiconset/
+
+.pearls-release.local.json

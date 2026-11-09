@@ -14,8 +14,8 @@ Verified November 8, 2026 on the user's Mac with Xcode 27.2 (27B52).
 | Device archive | iPhoneOS arm64 archive built; reusable upload archive is `build/ios/Pearls-TestFlight-entitlements-build-1.xcarchive` |
 | Distribution export | Passed strict signature verification; app and extension signatures and App Store profiles all retain the required App Group, team, and bundle identifiers |
 | Development signing | Apple reports no registered devices available to create development provisioning profiles; user selected TestFlight instead |
-| Physical iPhone installation | Pending TestFlight delivery; no USB connection requested |
-| App Store Connect / TestFlight | Initial upload attempt stopped before transmission because the app record was missing; creation of the approved “Pearls by Briggs Kellogg” record is in progress. No processed build or invitation yet. |
+| Physical iPhone installation | TestFlight build available; installation on the physical phone not yet verified |
+| App Store Connect / TestFlight | Upload succeeded at 5:10:47 PM Phoenix. Apple processed version 0.1.0 build 1; the build is assigned to the internal Briggs group. App Store Connect shows the confirmed internal tester as **Invited** on November 8, 2026; group has 1 tester and 1 build. |
 
 The previous native failures were caused by restricted macOS file-coordination, cache, and compiler-plugin access. Re-running with normal native access passed without changing app source.
 
@@ -28,12 +28,18 @@ Mac installation and launch do not establish every runtime acceptance check. The
 - Canonical checkout signing attempt: `build/logs/takeover-archive.log`.
 - Distribution export: `build/logs/takeover-testflight-group-export.log`.
 - Initial upload attempt: `build/logs/takeover-testflight-upload.log`.
+- Successful upload: `build/logs/takeover-testflight-upload-after-app-record.log`.
+- TestFlight build: `2aba377c-93d4-4440-b7f7-921f309c5f61`; internal group: `53c9d19e-50ee-4ba6-8550-cf56d5e56438`.
 
 Logs and derived products are local and ignored by Git. No private signing material is committed. Main app library storage remains local to each device; source mirroring to Proton Drive is separate.
 
 ## Continuing the release
 
 1. Keep the verified entitlement-preserving archive. The original unsigned archive's first export omitted App Groups and must not be uploaded.
-2. Complete the App Store Connect app record in the authenticated account and relevant release checks.
-3. Upload an unused build, verify processing, assign the TestFlight build, and invite the confirmed recipient. The user selected TestFlight rather than direct USB installation.
+2. App Store Connect record: [Pearls by Briggs Kellogg](https://appstoreconnect.apple.com/apps/6832381625/distribution), app ID `6832381625`.
+3. Invitation is verified. The tester can open the email invitation or TestFlight on their iPhone and install **Pearls by Briggs Kellogg**. Record actual phone installation and runtime acceptance separately.
 4. Update this record, commit, and run `python3 scripts/sync-project.py --push` followed by `--check`.
+
+## Repository validation
+
+[GitHub Actions validation](https://github.com/briggskellogg/pearls/actions/runs/42538591024) passed for source commit `f4b8567`, including sync safety tests, the core XCTest suite, and both platform builds.
