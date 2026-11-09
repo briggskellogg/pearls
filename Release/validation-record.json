@@ -1,0 +1,110 @@
+{
+  "date": "2026-11-08",
+  "host": "Linux",
+  "checks": [
+    {
+      "check": "bash syntax archive-ios.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash syntax build-mac.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash syntax common.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash syntax install-mac.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash syntax upload-testflight.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash syntax validate-apple.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "Linux preflight build-mac.sh",
+      "passed": true,
+      "exit_code": 1,
+      "output": "Pearls: Native Apple builds require a Mac with full Xcode. This environment is not macOS; no build, installation, or upload was attempted."
+    },
+    {
+      "check": "Linux preflight install-mac.sh",
+      "passed": true,
+      "exit_code": 1,
+      "output": "Pearls: Native Apple builds require a Mac with full Xcode. This environment is not macOS; no build, installation, or upload was attempted."
+    },
+    {
+      "check": "Linux preflight archive-ios.sh",
+      "passed": true,
+      "exit_code": 1,
+      "output": "Pearls: Native Apple builds require a Mac with full Xcode. This environment is not macOS; no build, installation, or upload was attempted."
+    },
+    {
+      "check": "Linux preflight upload-testflight.sh",
+      "passed": true,
+      "exit_code": 1,
+      "output": "Pearls: Native Apple builds require a Mac with full Xcode. This environment is not macOS; no build, installation, or upload was attempted."
+    },
+    {
+      "check": "Linux preflight validate-apple.sh",
+      "passed": true,
+      "exit_code": 1,
+      "output": "Pearls: Native Apple builds require a Mac with full Xcode. This environment is not macOS; no build, installation, or upload was attempted."
+    },
+    {
+      "check": "install help without Mac",
+      "passed": true,
+      "output": "Usage: /workspace/scratch/26fdaf08f155/PearlsNative/scripts/install-mac.sh [--user|--system]\nDefault: ~/Applications. --system requires an already writable /Applications. No sudo is used."
+    },
+    {
+      "check": "plist parse Pearls-Local-Mac.entitlements",
+      "passed": true,
+      "keys": [
+        "com.apple.security.app-sandbox",
+        "com.apple.security.files.user-selected.read-write"
+      ]
+    },
+    {
+      "check": "plist parse PrivacyInfo-file-metadata.template.xcprivacy",
+      "passed": true,
+      "keys": [
+        "NSPrivacyAccessedAPITypes"
+      ]
+    },
+    {
+      "check": "workflow YAML parse",
+      "passed": true
+    }
+  ],
+  "not_run": [
+    "Swift package tests",
+    "Xcode Mac compile",
+    "Xcode iOS Simulator compile",
+    "Native app launch",
+    "Signed iOS archive",
+    "App Store Connect upload",
+    "TestFlight invitation",
+    "Mac Applications installation"
+  ],
+  "static_project_review": {
+    "date": "2026-11-08",
+    "openstep_parse": "passed",
+    "all_object_references": "resolved",
+    "all_source_root_file_references": "present",
+    "updated_icon_phases": "present in both app targets",
+    "source_api_review": "16 shared app sources, Foundation core, and share controller; no direct listed required-reason API found",
+    "library_location": "app Application Support/Pearls on both platforms; App Group only shared inbox",
+    "native_compilation": "not run"
+  }
+}

@@ -1,0 +1,25 @@
+name: Pearls Apple validation
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Show selected Apple toolchain
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks
+          swift --version
+      - name: Test core and compile both apps
+        run: bash scripts/validate-apple.sh

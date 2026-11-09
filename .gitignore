@@ -1,0 +1,16 @@
+.DS_Store
+.pearls-sync.local.json
+.build/
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+Configuration/Local.xcconfig
+*.p8
+*.p12
+*.mobileprovision
+*.provisionprofile
+*.ipa
+*.xcarchive/
+Pearls/Resources/Assets.xcassets/AppIcon-iOS.appiconset/
+Pearls/Resources/Assets.xcassets/AppIcon-Mac.appiconset/

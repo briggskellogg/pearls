@@ -1,0 +1,39 @@
+FINAL API (UI agent; implement root against this):
+
+PearlsLibraryView(
+  items: [PearlsDisplayItem],
+  onCreate: @escaping (PearlsDraft) async throws -> Void,
+  onUpdateNote: @escaping (UUID, String, String) async throws -> Void,
+  onSetFavorite: @escaping (UUID, Bool) async throws -> Void,
+  onDelete: @escaping (UUID) async throws -> Void,
+  onImportFiles: @escaping () -> Void,
+  onExportArchive: @escaping () -> Void,
+  onImportArchive: @escaping () -> Void,
+  onShowRecentlyDeleted: @escaping () -> Void
+)
+
+PearlsDisplayItem.init(id: UUID, title: String, kind: PearlsItemKind,
+ text: String = "", sourceURL: URL? = nil, attachmentURL: URL? = nil,
+ originalFilename: String? = nil, createdAt: Date,
+ isFavorite: Bool = false, recognizedText: String = "")
+
+kind: PearlsItemKind.note / .link / .image / .file
+PearlsDraft.title and .text; computed .sourceURL classifies single valid HTTP(S) addresses.
+
+Root supplies reconciled items. UI owns navigation/query/filter/capture/detail and local error alerts.
+onImportFiles is called only after capture is dismissed.
+onExportArchive/onImportArchive are called only after settings is dismissed.
+The root can attach .fileImporter/.fileExporter to the wrapper view.
+
+Theme custom fonts try PPNeueYork-NormalLight, PPNeueYork-NormalMedium,
+and PPNeueYork-NormalExtrabold with a system fallback. Font assets and registration are root-owned.
+Settings clearly labels 'On this device' and offers backup export/import.
+
+UI completion notes:
+- All screens exist in UI and shared theme in Theme. PDF preview imports system PDFKit.
+- onShowRecentlyDeleted is appended to the PearlsLibraryView initializer; called after Settings dismisses. Root presents its restoration sheet.
+- Destination selection now uses a neutral row, primary heavier label, and destination-colored small indicator.
+- Font names use verified exact PostScript names.
+- Capture and note-editor failures preserve drafts, and unsaved text needs deliberate discard.
+- iPhone accessibility text sizes switch top destination buttons to a vertical layout; all utility targets have at least 44-point hit areas.
+- No compilation/Simulator validation possible in this Linux workspace. Source review only.

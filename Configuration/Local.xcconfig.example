@@ -1,0 +1,6 @@
+// Copy to Local.xcconfig and insert the actual team from Xcode Signing & Capabilities.
+// Do not place passwords or API private keys in this file.
+DEVELOPMENT_TEAM = YOURTEAMID
+// Change these only if the default bundle ID or App Group is unavailable in your account.
+PEARLS_BUNDLE_ID_BASE = com.briggskellogg.pearls
+PEARLS_APP_GROUP = group.com.briggskellogg.pearls

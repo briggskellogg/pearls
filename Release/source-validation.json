@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-08",
+  "environment": "Linux without Swift compiler or Xcode",
+  "status": "Source-only verification; no native build or deployment",
+  "checks": [
+    {
+      "check": "Python syntax",
+      "file": "BuildSupport/generate-project.py",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "BuildSupport/prepare-assets.sh",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "Install-Pearls.command",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "scripts/archive-ios.sh",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "scripts/build-mac.sh",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "scripts/common.sh",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "scripts/install-mac.sh",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "scripts/upload-testflight.sh",
+      "passed": true
+    },
+    {
+      "check": "Shell syntax",
+      "file": "scripts/validate-apple.sh",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Release/PrivacyInfo-file-metadata.template.xcprivacy",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Release/Pearls-Local-Mac.entitlements",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Configuration/Pearls-Mac.entitlements",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Configuration/Mac-Info.plist",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Configuration/iOS-Info.plist",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Configuration/Pearls-iOS.entitlements",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Configuration/Share-Info.plist",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Configuration/PearlsShare.entitlements",
+      "passed": true
+    },
+    {
+      "check": "XML plist parse",
+      "file": "Pearls/Resources/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "check": "Asset catalog JSON parse",
+      "file": "Pearls/Resources/Assets.xcassets/Contents.json",
+      "passed": true
+    },
+    {
+      "check": "Asset catalog JSON parse",
+      "file": "Pearls/Resources/Assets.xcassets/PearlsMark.imageset/Contents.json",
+      "passed": true
+    },
+    {
+      "check": "Xcode XML parse",
+      "file": "Pearls.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "passed": true
+    },
+    {
+      "check": "Xcode XML parse",
+      "file": "Pearls.xcodeproj/xcshareddata/xcschemes/Pearls-iOS.xcscheme",
+      "passed": true
+    },
+    {
+      "check": "Xcode XML parse",
+      "file": "Pearls.xcodeproj/xcshareddata/xcschemes/Pearls-Mac.xcscheme",
+      "passed": true
+    },
+    {
+      "check": "OpenStep project parse and resolved sources/references",
+      "passed": true,
+      "object_count": 125
+    },
+    {
+      "check": "Matching iPhone/extension App Group entitlement",
+      "passed": true
+    },
+    {
+      "check": "Archive type and file associations",
+      "passed": true
+    },
+    {
+      "check": "Installer stops clearly before action on Linux",
+      "passed": true,
+      "exit_code": 1
+    }
+  ],
+  "authored_core_tests": 20,
+  "executed_core_tests": 0,
+  "not_run": [
+    "Swift compilation",
+    "XCTest execution",
+    "macOS/iPhone launch or visual verification",
+    "device share-extension testing",
+    "signed archive",
+    "App Store Connect upload/processing",
+    "TestFlight invitation",
+    "Applications installation"
+  ]
+}
