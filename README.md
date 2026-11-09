@@ -2,7 +2,7 @@
 
 Pearls is a focused place for notes, links, images, and files. This project contains a shared SwiftUI app for **Mac and iPhone**, a local Foundation storage package, and an iPhone share extension.
 
-**Delivery status (November 8, 2026):** Pearls 0.1.0 build 2 adds a saved System/Light/Dark appearance setting. All 20 core tests and Mac/iOS Simulator builds pass. Build 2 is installed at `/Applications/Developer/Pearls.app`; Mac appearance switching and persistence across relaunch are verified. The iPhone build 2 archive and distribution export pass local verification, and upload succeeded at 5:33:22 PM Phoenix. App Store Connect shows build 2 as Processing; TestFlight group assignment remains pending. Build 1 remains the previously verified TestFlight release. Physical iPhone installation remains unverified. See [current release evidence](Release/STATUS.md).
+**Delivery status (November 8, 2026):** Pearls 0.1.0 build 2 adds a saved System/Light/Dark appearance setting. All 20 core tests and Mac/iOS Simulator builds pass. Build 2 is installed at `/Applications/Developer/Pearls.app`; Mac appearance switching and persistence across relaunch are verified. Apple processed the iPhone build, and build 2 is assigned to the existing Briggs internal TestFlight group for the already invited tester. Physical iPhone installation remains unverified. See [current release evidence](Release/STATUS.md).
 
 ## Project synchronization
 
